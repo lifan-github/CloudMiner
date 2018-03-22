@@ -30,7 +30,7 @@ export default class extends Component {
       <View style={styles.container}>
         <Text>欢迎来到shangpin</Text>
         <TouchableOpacity
-          onPress={() => Actions.Test2_key_2()}
+          onPress={() => Actions.product2()}
         >
           <Text>商品内页</Text>
         </TouchableOpacity>

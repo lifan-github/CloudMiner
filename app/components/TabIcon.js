@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 const TabIcon = (props) => {
-  console.log(props);
   return(
     <View>
       <Image

@@ -28,7 +28,7 @@ import Mine from './app/pages/Mine';
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
   return (state, action) => {
-    // console.log('ACTION:',action,Actions.currentScene)
+    console.log('ACTION:', action, Actions.currentScene);
     // console.log('Actions:', Actions);
     return defaultReducer(state, action);
   };
@@ -36,21 +36,19 @@ const reducerCreate = params => {
 
 const getSceneStyle = () => ({
   backgroundColor: '#f5f5f5',
-  // shadowOpacity: 1,
-  // shadowRadius: 3,
 });
 
 const onBackPress = () => {
-  const mainRoute = ['login', 'home', 'product', 'mine'];
-  if(mainRoute.indexOf(Actions.currentScene !== -1)){
+  const mainRoute = ['login', 'starting', 'home', 'product', 'mine'];
+  if (mainRoute.indexOf(Actions.currentScene) !== -1 ) {
     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+      // 退出APP之前清空顶层modal的sence场景
       Actions.LoginModal({type: 'reset'});
       BackHandler.exitApp();
     }
-    //即时并提示
     this.lastBackPressed = Date.now();
     ToastAndroid.show('再次点击退出程序', 1500);
-  }else{
+  } else {
     Actions.pop();
   }
   return true
@@ -102,7 +100,7 @@ export default class App extends Component {
                 transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
               >
                 <Scene component={Product} key="product"/>
-                <Scene component={Product2} key="Test2_key_2"/>
+                <Scene component={Product2} key="product2"/>
               </Stack>
 
               <Stack
@@ -122,16 +120,12 @@ export default class App extends Component {
               key="starting"
               component={Starting}
               hideNavBar
-              onExit={() => console.log('onExit')}
-              onLeft={Actions.pop}
             />
             <Scene
               title='登录'
               key="login"
               component={Login}
               hideNavBar
-              onExit={() => console.log('onExit')}
-              onLeft={Actions.pop}
             />
           </Stack>
         </Modal>
