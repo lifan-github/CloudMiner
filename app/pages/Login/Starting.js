@@ -1,40 +1,32 @@
 import React, {Component} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  TouchableOpacity
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import Animation from 'lottie-react-native';
 
 export default class Starting extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
-
-  componentWillMount() {
-
-  }
-
   componentDidMount() {
-
+    this.animation.play();
+    this.timerout = setTimeout(function(){
+      Actions.guide();
+    },3000)
   }
 
-  componentWillUnmount() {
-
+  componentWillUnmount(){
+    this.animation.stop();
+    this.timerout && clearTimeout(this.timerout)
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>启动页面</Text>
-        <TouchableOpacity
-          style={styles.botton}
-          onPress={() => Actions.guide()}
-        >
-          <Text style={styles.entryText}>进入引导页</Text>
-        </TouchableOpacity>
+        <Animation
+          ref={animation => {this.animation = animation}}
+          style={{width: 300, height: 300}}
+          source={require('../../images/starting')}
+        />
       </View>
     )
   }
@@ -45,16 +37,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  botton: {
-    height: 40,
-    width: 120,
-    borderRadius: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'blue'
-  },
-  entryText: {
-    color: '#fff'
+    backgroundColor: '#01cec3'
   }
 });

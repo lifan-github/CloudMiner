@@ -73,7 +73,113 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
 3、引用图片资源
 
 ```
-import {ImageStore} from '../images/index';
+import ImageStore from '../images';
 <Image source={ImageStore.guidePic.guidePic2} style={styles.imgs}/>
+
+```
+
+##（三）、动画使用lottie-react-native第三方组件安装配置及出现的问题
+Android版：
+
+```
+1、npm install lottie-react-native --save
+2、react-native link lottie-react-native
+
+```
+
+#### 配置中出现的问题
+Lottie需要Android支持库版本26.如果您正在使用该react-native init 模板，您可能仍然在使用23.要更改此设置，
+只需转到该块内android/app/build.gradle的compileSdkVersion选项android并将其更改为
+
+```
+android {
+    compileSdkVersion 26 // <-- update this to 26
+    // ...
+```
+
+#### 实践中遇到的问题（安卓）
+用react-native run-android 时报的错误
+
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring project ':app'.
+> Could not resolve all dependencies for configuration ':app:_debugApk'.
+   > A problem occurred configuring project ':lottie-react-native'.
+      > Could not resolve all dependencies for configuration ':lottie-react-native:_debugPublishCopy'.
+         > Could not find com.android.support:appcompat-v7:26.1.0.
+           Searched in the following locations:
+               file:/Users/lihong/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/26.1.0/appcompat-v7-26.1.0.pom
+               file:/Users/lihong/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/26.1.0/appcompat-v7-26.1.0.jar
+               file:/Users/lihong/WebstormProjects/LottieExample/android/sdk-manager/com/android/support/appcompat-v7/26.1.0/appcompat-v7-26.1.0.jar
+           Required by:
+               LottieExample:lottie-react-native:unspecified > com.airbnb.android:lottie:2.3.1
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+
+Total time: 20.289 secs
+Could not install the app on the device, read the error above for details.
+Make sure you have an Android emulator running or a device connected and have
+set up your Android development environment:
+https://facebook.github.io/react-native/docs/android-setup.html
+
+```
+#### 错误解决方法
+1. ~app/build.gradle 文件中
+
+```
+android {
+    compileSdkVersion 26  //更改为26
+    buildToolsVersion "26.0.1"  //更改为26.0.1
+
+    defaultConfig {
+        applicationId "com.rn"
+        minSdkVersion 16
+        targetSdkVersion 26  // 更改为26
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+
+...
+
+dependencies {
+    compile project(':lottie-react-native')
+    compile project(':react-native-device-info')
+    compile project(':react-native-image-crop-picker')
+    compile fileTree(dir: "libs", include: ["*.jar"])
+    compile "com.android.support:appcompat-v7:26.0.1" // 更改为26.0.1同上面android中一样版本
+    compile "com.facebook.react:react-native:+"  // From node_modules
+}
+```
+
+2. 如果还报错没有找到的之前的报错安装包解决方法（~android/build.gradle 文件中）
+
+```
+allprojects {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven { url 'https://maven.google.com' }  // 添加下载URL
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+    }
+}
+
+```
+
+##### lottie-react-native 作图导出JSON需注意
+
+```
+ 作图软件做好图片后，不要导出在该软件中导出PNG，直接拖入AE软件中，添加进动画效果中，否则JSON文件不能用，APP直接退出
 
 ```
