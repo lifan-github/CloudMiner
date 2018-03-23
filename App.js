@@ -25,6 +25,8 @@ import Product from './app/pages/Product';
 import Product2 from './app/pages/Product/Product2';
 import Mine from './app/pages/Mine';
 
+import ErrorModal from './app/components/ErrorModal';
+
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
   return (state, action) => {
@@ -113,7 +115,7 @@ export default class App extends Component {
                 <Scene component={Mine} key="mine"/>
               </Stack>
             </Tabs>
-
+            <Scene component={ErrorModal} key="errorModal"/>
           </Stack>
           <Stack key="LoginModal" initial={true}>
             <Scene
