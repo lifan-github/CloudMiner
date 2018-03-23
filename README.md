@@ -48,3 +48,20 @@ Lightbox是用于将组件渲染在当前组件上Scene的组件 。与Modal不�
 // 具体demo在App.js文件中 中文文档使用查看 https://www.jianshu.com/p/37428d579cf6
 
 ```
+
+### 注意的问题
+1、场景转换动画（默认是底部至顶部push），改变场景动画方法：
+
+```
+// 引用：
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+
+<Modal
+    key="modal"
+    hideNavBar
+    transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+  >
+  ....
+  </Modal>
+  // 具体使用请看demo
+```
