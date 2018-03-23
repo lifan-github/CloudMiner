@@ -31,9 +31,9 @@ export default class Starting extends Component {
         <Text>启动页面</Text>
         <TouchableOpacity
           style={styles.botton}
-          onPress={() => Actions.login()}
+          onPress={() => Actions.guide()}
         >
-          <Text style={styles.entryText}>进入登录页</Text>
+          <Text style={styles.entryText}>进入引导页</Text>
         </TouchableOpacity>
       </View>
     )

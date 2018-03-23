@@ -65,3 +65,15 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
   </Modal>
   // 具体使用请看demo
 ```
+
+## (二)、路由搭建完成后，如何高效管理 React Native 项目中的图片资源
+如果直接引用地址，无论是更改图片资源名称还是更新图片都是比较麻烦的事情
+1、在images文件夹中建立一个images.js文件存放图片资源
+2、建立一个index.js文件导出该文件
+3、引用图片资源
+
+```
+import {ImageStore} from '../images/index';
+<Image source={ImageStore.guidePic.guidePic2} style={styles.imgs}/>
+
+```

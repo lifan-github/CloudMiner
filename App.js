@@ -18,6 +18,7 @@ import ImageStore from './app/images';
 import TabIcon from './app/components/TabIcon';
 
 import Starting from './app/pages/Login/Starting';
+import Guide from './app/pages/Login/Guide';
 import Login from './app/pages/Login/Login';
 
 import Home from './app/pages/Home';
@@ -73,6 +74,11 @@ export default class App extends Component {
             <Scene
               key="starting"
               component={Starting}
+              hideNavBar
+            />
+            <Scene
+              key="guide"
+              component={Guide}
               hideNavBar
             />
             <Scene
