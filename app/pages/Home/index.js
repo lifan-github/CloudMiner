@@ -2,18 +2,19 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  Alert,
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import HomeDetails from './HomeDetails';
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       clickText: "开始点击按钮",
-      count: 1
+      count: 1,
+      detailContent: true
     }
   }
 
@@ -21,11 +22,8 @@ export default class Home extends Component {
     console.log("componentWillMount1111");
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log("componentWillReceiveProps1111", nextProps);
-  }
-
   shouldComponentUpdate(nextProps, nextState){
+    console.log(this.state.detailContent,'detailContent');
     if (this.state.count !== nextState.count) {
       console.log("shouldComponentUpdate1111---组件需要更新");
       return true;
@@ -53,7 +51,8 @@ export default class Home extends Component {
     const { count } = this.state;
     this.setState({
       clickText: "我点击了按钮",
-      count: count + 1
+      count: count + 1,
+      detailContent: false
     })
   }
 
@@ -74,6 +73,7 @@ export default class Home extends Component {
         >
           <Text>{this.state.clickText}</Text>
         </TouchableOpacity>
+        <HomeDetails detailContent={this.state.detailContent}/>
       </View>
     )
   }

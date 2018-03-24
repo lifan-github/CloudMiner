@@ -185,3 +185,4 @@ allprojects {
 ```
 
 ## （三）、生命周期
+    具体查看：https://www.jianshu.com/p/c21e0314beef

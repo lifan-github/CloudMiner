@@ -10,7 +10,7 @@ import {Actions} from "react-native-router-flux";
 export default class Sigin extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props, "constructor");
+    console.log("constructor");
     this.state = {
       name: "lifan"
     }
