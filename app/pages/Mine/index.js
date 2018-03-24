@@ -14,15 +14,15 @@ export default class extends Component {
   }
 
   componentWillMount() {
-
+   console.log("componentWillMount333")
   }
 
   componentDidMount() {
-
+    console.log("componentDidMount333")
   }
 
   componentWillUnmount() {
-
+    console.log("componentWillUnmount333")
   }
 
   render() {

@@ -10,19 +10,39 @@ import {Actions} from "react-native-router-flux";
 export default class Sigin extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    console.log(this.props, "constructor");
+    this.state = {
+      name: "lifan"
+    }
   }
 
   componentWillMount() {
+    console.log("componentWillMount");
+  }
 
+  componentWillReceiveProps(nextProps){
+    console.log("componentWillReceiveProps", nextProps);
+  }
+
+  shouldComponentUpdate(){
+    console.log("shouldComponentUpdate");
+  }
+
+  componentWillUpdate(){
+    console.log("componentWillUpdate");
+  }
+
+  componentDidUpdate(){
+    console.log("componentDidUpdate");
   }
 
   componentDidMount() {
-
+    console.log("componentDidMount");
+    console.log(this.state.name,'state----->>>>>')
   }
 
   componentWillUnmount() {
-
+    console.log("componentWillUnmount");
   }
 
   render() {

@@ -15,7 +15,6 @@ export default class Starting extends Component {
   }
 
   componentWillUnmount(){
-    this.animation.stop();
     this.timerout && clearTimeout(this.timerout)
   }
 
