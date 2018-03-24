@@ -186,3 +186,4 @@ allprojects {
 
 ## （三）、生命周期
     具体查看：https://www.jianshu.com/p/c21e0314beef
+    #### React/React Native 的ES5 ES6写法对照表 http://bbs.reactnative.cn/topic/15/react-react-native-%E7%9A%84es5-es6%E5%86%99%E6%B3%95%E5%AF%B9%E7%85%A7%E8%A1%A8
