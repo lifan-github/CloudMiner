@@ -17,6 +17,7 @@ import commonStyle from '../../styles';
 import ImageStore from '../../images';
 import TextStore from '../../text';
 import IconStore from '../../images/icon';
+import {CheckedPhone, CheckedEmail} from '../../utils/global';
 
 const {width} = Dimensions.get('window');
 let wait;
@@ -42,7 +43,7 @@ class Login extends Component {
   }
 
   componentWillUnmount() {
-
+    this.timer && clearInterval(this.timer);
   }
 
   waitTime = () => {
@@ -121,7 +122,7 @@ class Login extends Component {
 
   // 发送验证码按钮并检测手机号/邮箱
   bindSendCodeNum() {
-    /*const that = this;
+    const that = this;
     const {phoneNum, emailNum, phoneNumSigin} = this.state;
     console.log(phoneNumSigin, '登录方式');
     if (phoneNumSigin) {
@@ -131,7 +132,7 @@ class Login extends Component {
         that.setState({vcode_disabled: true});
         wait = 60; //重新赋值
         that.refs["vcode"].focus();
-        Action.sendVerifyCode({mobile: phoneNum});
+        // Action.sendVerifyCode({mobile: phoneNum});
         that.timer = setInterval(() => {
           that.waitTime();
         }, 1000);
@@ -144,12 +145,12 @@ class Login extends Component {
         that.setState({vcode_disabled: true});
         wait = 60; //重新赋值
         that.refs["vcode"].focus();
-        Action.sendVerifyCode({email: emailNum});
+        // Action.sendVerifyCode({email: emailNum});
         that.timer = setInterval(() => {
           that.waitTime();
         }, 1000);
       }
-    }*/
+    }
   }
 
   onVcodeNumChange(value) {
@@ -160,7 +161,7 @@ class Login extends Component {
 
   // 登录APP
   bindSignInBtn() {
-    /*const {phoneNumSigin, phoneNum, emailNum, codeNum} = this.state;
+    const {phoneNumSigin, phoneNum, emailNum, codeNum} = this.state;
     if (phoneNumSigin) { // 手机号登录
       if (!phoneNum) {
         ToastAndroid.showWithGravity('请输入手机号', ToastAndroid.SHORT, ToastAndroid.CENTER);
@@ -168,7 +169,7 @@ class Login extends Component {
         ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
       } else if ((codeNum.length === 6) && CheckedPhone(phoneNum)) {
         Keyboard.dismiss();
-        Action.signInApp({mobile: phoneNum, vcode: codeNum});
+        // Action.signInApp({mobile: phoneNum, vcode: codeNum});
       }
     } else { // 邮箱登录
       if (!emailNum) {
@@ -177,9 +178,9 @@ class Login extends Component {
         ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
       } else if ((codeNum.length === 6) && CheckedEmail(emailNum)) {
         Keyboard.dismiss();
-        Action.signInApp({email: emailNum, vcode: codeNum});
+        // Action.signInApp({email: emailNum, vcode: codeNum});
       }
-    }*/
+    }
   }
 
   render() {
