@@ -6,8 +6,10 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {Actions} from "react-native-router-flux";
+import { connect } from 'react-redux';
+import {sendVcode, loginApp} from '../../redux/actions/LoginActions';
 
-export default class Sigin extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     console.log("constructor");
@@ -16,29 +18,9 @@ export default class Sigin extends Component {
     }
   }
 
-  componentWillMount() {
-    console.log("componentWillMount");
-  }
-
-  componentWillReceiveProps(nextProps){
-    console.log("componentWillReceiveProps", nextProps);
-  }
-
-  shouldComponentUpdate(){
-    console.log("shouldComponentUpdate");
-  }
-
-  componentWillUpdate(){
-    console.log("componentWillUpdate");
-  }
-
-  componentDidUpdate(){
-    console.log("componentDidUpdate");
-  }
-
   componentDidMount() {
     console.log("componentDidMount");
-    console.log(this.state.name,'state----->>>>>')
+    this.props.dispatch(sendVcode({lifan: 'name'}));
   }
 
   componentWillUnmount() {
@@ -79,3 +61,14 @@ const styles = StyleSheet.create({
     color: '#fff'
   }
 });
+
+//基于全局 state ，哪些是我们想注入的 props
+function select(state) {
+  console.log(state, 'store-------9999999');
+  return {
+    loginReducer: state.LoginReducer
+  }
+}
+
+// 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
+export default connect(select)(Login);

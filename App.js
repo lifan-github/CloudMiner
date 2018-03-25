@@ -14,6 +14,12 @@ import {
   Stack,
   Lightbox,
 } from 'react-native-router-flux';
+// 引入react-redux
+import {Provider} from 'react-redux';
+// 引入store文件
+import store from './app/redux/store';
+console.log(store,'store123')
+
 import ImageStore from './app/images';
 import TabIcon from './app/components/TabIcon';
 
@@ -70,85 +76,87 @@ export default class App extends Component {
 
   render() {
     return (
-      <Router
-        createReducer={reducerCreate}
-        getSceneStyle={getSceneStyle}
-        backAndroidHandler={onBackPress}
-      >
-        <Overlay key="overlay">
-          <Modal
-            key="modal"
-            hideNavBar
-            transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
-          >
-            <Scene
-              key="starting"
-              component={Starting}
+      <Provider store={store}>
+        <Router
+          createReducer={reducerCreate}
+          getSceneStyle={getSceneStyle}
+          backAndroidHandler={onBackPress}
+        >
+          <Overlay key="overlay">
+            <Modal
+              key="modal"
               hideNavBar
-            />
-            <Scene
-              key="guide"
-              component={Guide}
-              hideNavBar
-            />
-            <Scene
-              title='登录'
-              key="login"
-              component={Login}
-              hideNavBar
-            />
-            <Lightbox key="root">
-              <Tabs
-                key="tabbar"        // 唯一标识
-                wrap={true}         // 自动使用自己的导航栏包装每个场景
-                showLabel={false}   // 显示文字
-                tabBarStyle={styles.tabBarStyle} // tabBar的样式
-                swipeEnabled={false}// 是否可以滑动
-                headerMode='screen' // 页面切换方式
-                icon={TabIcon}      // 自定义Icon显示方式
-                lazy={true}         // 是否默认渲染tabbar
-                tabBarPosition={'bottom'}       // tabbar在顶部还是底部，iOS默认顶部，安卓默认顶部
-                activeBackgroundColor='white'   // 选中tabbar的背景色
-                inactiveBackgroundColor='white' // 未选中tabbar的背景色
-                activeTintColor='#4ECBFC'       // 选中tabbar图标的颜色
-                inactiveTintColor='#aaa'        // 未选中tabbar图标的颜色
-              >
-                <Stack
-                  key="Test1"
-                  image={ImageStore.commonPic.logo}
-                  selectedImage={ImageStore.commonPic.userPhoto}
-                  transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+              transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+            >
+              <Scene
+                key="starting"
+                component={Starting}
+                hideNavBar
+              />
+              <Scene
+                key="guide"
+                component={Guide}
+                hideNavBar
+              />
+              <Scene
+                title='登录'
+                key="login"
+                component={Login}
+                hideNavBar
+              />
+              <Lightbox key="root">
+                <Tabs
+                  key="tabbar"        // 唯一标识
+                  wrap={true}         // 自动使用自己的导航栏包装每个场景
+                  showLabel={false}   // 显示文字
+                  tabBarStyle={styles.tabBarStyle} // tabBar的样式
+                  swipeEnabled={false}// 是否可以滑动
+                  headerMode='screen' // 页面切换方式
+                  icon={TabIcon}      // 自定义Icon显示方式
+                  lazy={true}         // 是否默认渲染tabbar
+                  tabBarPosition={'bottom'}       // tabbar在顶部还是底部，iOS默认顶部，安卓默认顶部
+                  activeBackgroundColor='white'   // 选中tabbar的背景色
+                  inactiveBackgroundColor='white' // 未选中tabbar的背景色
+                  activeTintColor='#4ECBFC'       // 选中tabbar图标的颜色
+                  inactiveTintColor='#aaa'        // 未选中tabbar图标的颜色
                 >
-                  <Scene component={Home} key="home" title={'首页'}/>
-                  <Scene component={Notice} key="notice" title="公告"/>
-                </Stack>
+                  <Stack
+                    key="Test1"
+                    image={ImageStore.commonPic.logo}
+                    selectedImage={ImageStore.commonPic.userPhoto}
+                    transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+                  >
+                    <Scene component={Home} key="home" title={'首页'}/>
+                    <Scene component={Notice} key="notice" title="公告"/>
+                  </Stack>
 
-                <Stack
-                  key='Test2'
-                  title='商品'
-                  image={ImageStore.commonPic.logo}
-                  selectedImage={ImageStore.commonPic.userPhoto}
-                  transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
-                >
-                  <Scene component={Product} key="product"/>
-                  <Scene component={Product2} key="product2"/>
-                </Stack>
+                  <Stack
+                    key='Test2'
+                    title='商品'
+                    image={ImageStore.commonPic.logo}
+                    selectedImage={ImageStore.commonPic.userPhoto}
+                    transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+                  >
+                    <Scene component={Product} key="product"/>
+                    <Scene component={Product2} key="product2"/>
+                  </Stack>
 
-                <Stack
-                  key="Test3"
-                  title='我的'
-                  image={ImageStore.commonPic.logo}
-                  selectedImage={ImageStore.commonPic.userPhoto}
-                  transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
-                >
-                  <Scene component={Mine} key="mine"/>
-                </Stack>
-              </Tabs>
-              <Scene key="errorModal" component={ErrorModal}/>
-            </Lightbox>
-          </Modal>
-        </Overlay>
-      </Router>
+                  <Stack
+                    key="Test3"
+                    title='我的'
+                    image={ImageStore.commonPic.logo}
+                    selectedImage={ImageStore.commonPic.userPhoto}
+                    transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
+                  >
+                    <Scene component={Mine} key="mine"/>
+                  </Stack>
+                </Tabs>
+                <Scene key="errorModal" component={ErrorModal}/>
+              </Lightbox>
+            </Modal>
+          </Overlay>
+        </Router>
+      </Provider>
     );
   }
 }
