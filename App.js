@@ -18,7 +18,7 @@ import {
 import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
-console.log(store,'store123')
+// console.log(store,'store123')
 
 import ImageStore from './app/images';
 import TabIcon from './app/components/TabIcon';

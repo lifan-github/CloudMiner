@@ -78,7 +78,33 @@ import ImageStore from '../images';
 
 ```
 
-##（三）、动画使用lottie-react-native第三方组件安装配置及出现的问题
+## (三)、React-Native配置自定义字体文件（安卓Android）
+
+1. 首先下载自己想要的图标或则设计师自己设计的图标，转换成ttf格式字体
+2. 在Android/app/src/main/assets/fonts/建立文件夹，并拷贝ttf文件字体进入
+3. 重新编译项目，react-native run-android
+4. 用法如下
+
+```
+
+<Text style={{ color: 'red', fontFamily:'iconfont',fontSize: 30 }}>&#xe666;</Text>
+// 注意iconfont是字体文件名称可以自己定义 &#xe666;使用某个字体的unicode
+
+```
+
+## (四)、React-native(0.51.0) WebView组件乱码问题
+```
+      <WebView
+        style={styles.webViewStyle}
+        startInLoadingState={true}
+        scalesPageToFit={true}
+        source={{html: left_html + `${html_content}` + right_html, baseUrl: ''}}
+      />
+   // 添加 baseUrl: ''解决乱码（部分机型乱码）
+
+```
+
+##（五）、动画使用lottie-react-native第三方组件安装配置及出现的问题
 Android版：
 
 ```
@@ -184,6 +210,6 @@ allprojects {
 
 ```
 
-## （三）、生命周期
+## （六）、生命周期
     具体查看：https://www.jianshu.com/p/c21e0314beef
     #### React/React Native 的ES5 ES6写法对照表 http://bbs.reactnative.cn/topic/15/react-react-native-%E7%9A%84es5-es6%E5%86%99%E6%B3%95%E5%AF%B9%E7%85%A7%E8%A1%A8
