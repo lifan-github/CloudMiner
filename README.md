@@ -104,8 +104,7 @@ import ImageStore from '../images';
 
 ```
 
-##（五）、动画使用lottie-react-native第三方组件安装配置及出现的问题
-Android版：
+## （五）、动画使用lottie-react-native第三方组件安装配置及出现的问题 Android版：
 
 ```
 1、npm install lottie-react-native --save
