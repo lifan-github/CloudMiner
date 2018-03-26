@@ -4,7 +4,6 @@ import {
   View,
   Image,
   TextInput,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -13,15 +12,9 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {sendVcode, loginApp} from '../../redux/actions/LoginActions';
-import commonStyle from '../../styles';
-import ImageStore from '../../images';
-import TextStore from '../../text';
-import IconStore from '../../images/icon';
-import {CheckedPhone, CheckedEmail} from '../../utils/global';
+import {CheckedPhone, CheckedEmail} from '../../utils/Config';
 
-const {width} = Dimensions.get('window');
 let wait;
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -340,13 +333,13 @@ const styles = StyleSheet.create({
   tipsText: {
     textAlign: 'center',
     marginTop: 15,
-    fontSize: 14,
+    fontSize: FONT_SIZE(14),
     color: "#999"
   },
   selectBottomContent: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: width - 40,
+    width: SCREEN_WIDTH - 40,
     position: 'absolute',
     bottom: 30,
     marginLeft: 20

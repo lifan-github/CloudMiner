@@ -7,8 +7,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ImageStore from '../../images';
-import {Actions} from 'react-native-router-flux';
 
 export default class Guide extends Component {
   constructor(props) {

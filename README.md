@@ -92,6 +92,9 @@ import ImageStore from '../images';
 
 ```
 
+>Global.js：全局变量方法，设置全局的方法，比如：系统判断，屏幕宽高，主题设置，图片初始化。
+具体的详情可以查看~utils/Global.js内部注释。
+
 ## (四)、React-native(0.51.0) WebView组件乱码问题
 ```
       <WebView

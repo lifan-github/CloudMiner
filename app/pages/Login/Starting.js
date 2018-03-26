@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import {Actions} from 'react-native-router-flux';
 import Animation from 'lottie-react-native';
 
 export default class Starting extends Component {
