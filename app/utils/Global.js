@@ -14,11 +14,17 @@ import TextStore from '../text';
 // 项目中的文字图片
 import IconStore from '../images/icon';
 
+// 项目中的颜色
+import ColorStore from '../color';
+
 // 项目中的公共样式
 import commonStyle from '../styles';
 
 // 处理安卓，iOS字体不同的类，使用方法 fontSize:FONT_SIZE(20)
 import FontSize from './FontSize';
+
+// 处理安卓，iOS宽高的区别，使用方法 width:px2dp(20)
+import { px2dp } from './Tool';
 
 //====== 设备资源管理 ======
 
@@ -52,6 +58,9 @@ global.SCREEN_HEIGHT = height;
 // 适配字体
 global.FONT_SIZE = FontSize;
 
+// 屏幕适配
+global.px2dp = px2dp;
+
 //====== 公共资源管理 ======
 
 // router跳转的方法
@@ -65,6 +74,9 @@ global.TextStore = TextStore;
 
 // 项目中的文字图片
 global.IconStore = IconStore;
+
+// 项目中的颜色
+global.ColorStore = ColorStore;
 
 // 项目中的公共样式
 global.commonStyle = commonStyle;
