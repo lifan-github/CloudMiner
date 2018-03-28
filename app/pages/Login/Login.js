@@ -154,6 +154,8 @@ class Login extends Component {
 
   // 登录APP
   bindSignInBtn() {
+    Actions.tabbar();
+
     const {phoneNumSigin, phoneNum, emailNum, codeNum} = this.state;
     if (phoneNumSigin) { // 手机号登录
       if (!phoneNum) {

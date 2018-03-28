@@ -14,6 +14,8 @@ import {
   Stack,
   Lightbox,
 } from 'react-native-router-flux';
+let WeChat=require('react-native-wechat'); // 用inport 导入直接报错
+
 // 引入react-redux
 import {Provider} from 'react-redux';
 // 引入store文件
@@ -71,6 +73,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    WeChat.registerApp('wx8d560da3ba038e7e');
     console.log("componentDidMount----root");
   }
 
@@ -126,7 +129,13 @@ export default class App extends Component {
                     selectedImage={ImageStore.commonPic.userPhoto}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
-                    <Scene component={Home} key="home" title={'首页'}/>
+                    <Scene
+                      component={Home}
+                      key="home"
+                      title={'首页'}
+                      onRight={() => alert('Right button')}
+                      rightTitle="分享"
+                    />
                     <Scene component={Notice} key="notice" title="公告"/>
                   </Stack>
 
@@ -166,4 +175,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     height: 49,
   },
+  shareButton: {
+    width: 80,
+    height: 37,
+    position: 'absolute',
+    bottom: 4,
+    right: 2,
+    padding: 8,
+    color: 'blue',
+    backgroundColor: 'red'
+  }
 });
