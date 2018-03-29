@@ -215,3 +215,49 @@ allprojects {
 ## （六）、生命周期
     具体查看：https://www.jianshu.com/p/c21e0314beef
     #### React/React Native 的ES5 ES6写法对照表 http://bbs.reactnative.cn/topic/15/react-react-native-%E7%9A%84es5-es6%E5%86%99%E6%B3%95%E5%AF%B9%E7%85%A7%E8%A1%A8
+
+## (七）、本地持久化存储 react-native-storage
+```
+import Storage from 'react-native-storage';
+import {AsyncStorage} from 'react-native';
+
+let storage = new Storage({
+  // 最大容量，默认值1000条数据循环存储
+  size: 1000,
+
+  // 存储引擎：对于RN使用AsyncStorage，对于web使用window.localStorage
+  // 如果不指定则数据只会保存在内存中，重启后即丢失
+  storageBackend: AsyncStorage,
+
+  // 数据过期时间，默认一整天（1000 * 3600 * 24 毫秒），设为null则永不过期
+  defaultExpires: null,
+
+  // 读写时在内存中缓存数据。默认启用。
+  enableCache: true,
+
+  // 如果storage中没有相应数据，或数据已过期，
+  // 则会调用相应的sync方法，无缝返回最新数据。
+  // sync方法的具体说明会在后文提到
+  // 你可以在构造函数这里就写好sync的方法
+  // 或是在任何时候，直接对storage.sync进行赋值修改
+  // 或是写到另一个文件里，这里require引入
+  //sync: require('你可以另外写一个文件专门处理sync')
+
+});
+
+exports.storage = storage;
+
+引用 import {storage} from '../store/StorageStore';
+
+storage.load({
+      key: "storageName"
+    }).then(ret => {
+      // 如果***找到数据***，则在then方法中返回
+      console.log(ret,'ret--->>>');
+    }).catch(err => {
+      //如果没有找到数据且没有sync方法，
+      console.log(err,'err--->>>');
+    });
+
+
+```

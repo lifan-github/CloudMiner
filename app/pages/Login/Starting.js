@@ -7,14 +7,40 @@ import Animation from 'lottie-react-native';
 
 export default class Starting extends Component {
   componentDidMount() {
-    this.animation.play();
-    this.timerout = setTimeout(function(){
-      Actions.guide();
-    },3000)
+    const that = this;
+    that.animation.play();
+    storage.load({
+      key: "accessToken"
+    }).then(ret => {
+      if(ret.accessToken){
+        that.timerOut = setTimeout(() => {
+          Actions.tabbar();
+        },2000);
+      }
+    }).catch(err1 => {
+      storage.load({
+        key: "isGuide"
+      }).then(ret => {
+        // 如果***找到数据***，则在then方法中返回
+        console.log(ret,'ret--->>>');
+        if(ret.guideIn){
+          that.timerOut = setTimeout(() => {
+            Actions.login();
+          },2000);
+        }
+      }).catch(err => {
+        //如果没有找到数据且没有sync方法，
+        //或者有其他异常，则在catch中返回
+        that.timerOut = setTimeout(() => {
+          Actions.guide();
+        },2000);
+        console.log(err,'err--->>>');
+      });
+    });
   }
 
   componentWillUnmount(){
-    this.timerout && clearTimeout(this.timerout)
+    this.timerOut && clearTimeout(this.timerOut)
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dimensions, PixelRatio, Platform} from 'react-native';
+import {storage} from './StorageStore';
 
 
 // 统一管理项目中的路由
@@ -80,6 +81,9 @@ global.ColorStore = ColorStore;
 
 // 项目中的公共样式
 global.commonStyle = commonStyle;
+
+// 缓存全局
+global.storage = storage;
 
 
 

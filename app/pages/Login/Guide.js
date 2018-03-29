@@ -17,17 +17,16 @@ export default class Guide extends Component {
     }
   }
 
-  componentWillMount() {
-
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
+  // 初次进入保存缓存方法（注意:请不要在key中使用_下划线符号!）
+  _saveData = () => {
+    storage.save({
+      key: 'isGuide',
+      data: {
+        guideIn: true
+      },
+      expires: null
+    });
+  };
 
   onIndexChanged(index){
     let {guideDotsActive} = this.state;
@@ -37,6 +36,7 @@ export default class Guide extends Component {
   }
 
   enter(){
+    this._saveData();
     Actions.login();
   }
 

@@ -32,7 +32,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(sendVcode({lifan: 'name'}));
+
   }
 
   componentWillUnmount() {
@@ -115,7 +115,8 @@ class Login extends Component {
 
   // 发送验证码按钮并检测手机号/邮箱
   bindSendCodeNum() {
-    const that = this;
+    this.props.dispatch(sendVcode({mobile: '18266913301'}));
+    /*const that = this;
     const {phoneNum, emailNum, phoneNumSigin} = this.state;
     console.log(phoneNumSigin, '登录方式');
     if (phoneNumSigin) {
@@ -143,7 +144,7 @@ class Login extends Component {
           that.waitTime();
         }, 1000);
       }
-    }
+    }*/
   }
 
   onVcodeNumChange(value) {

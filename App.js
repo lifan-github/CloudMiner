@@ -52,7 +52,7 @@ const getSceneStyle = () => ({
 });
 
 const onBackPress = () => {
-  const mainRoute = ['login', 'starting', 'home', 'product', 'mine'];
+  const mainRoute = ['guide', 'login', 'starting', 'home', 'product', 'mine'];
   if (mainRoute.indexOf(Actions.currentScene) !== -1) {
     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
       // 退出APP之前清空顶层modal的sence场景
@@ -69,12 +69,10 @@ const onBackPress = () => {
 
 export default class App extends Component {
   componentWillMount() {
-    console.log("componentWillMount----root");
   }
 
   componentDidMount() {
     WeChat.registerApp('wx8d560da3ba038e7e');
-    console.log("componentDidMount----root");
   }
 
   render() {
@@ -95,6 +93,7 @@ export default class App extends Component {
                 key="starting"
                 component={Starting}
                 hideNavBar
+                initial={true}
               />
               <Scene
                 key="guide"
