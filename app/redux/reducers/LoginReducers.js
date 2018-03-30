@@ -15,7 +15,7 @@ export default function LoginReducer(state = initApp, action) {
   }
 }
 
-
+// 发送验证码
 function sendVcode(para) {
   httpClient.client.then(function (event) {
     httpClient.setHeader(event);
@@ -33,3 +33,5 @@ function sendVcode(para) {
     console.log(err, 'sendVerifyCode22');
   })
 }
+
+// 用户登录APP

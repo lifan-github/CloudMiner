@@ -15,14 +15,14 @@ import TextStore from '../text';
 // 项目中的文字图片
 import IconStore from '../images/icon';
 
-// 项目中的颜色
+// 项目中的主题颜色
 import ColorStore from '../color';
-
-// 项目中的公共样式
-import commonStyle from '../styles';
 
 // 处理安卓，iOS字体不同的类，使用方法 fontSize:FONT_SIZE(20)
 import FontSize from './FontSize';
+
+// 项目中的公共样式
+import commonStyle from '../styles';
 
 // 处理安卓，iOS宽高的区别，使用方法 width:px2dp(20)
 import { px2dp } from './Tool';

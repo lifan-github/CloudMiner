@@ -11,10 +11,10 @@ import {
   ToastAndroid
 } from 'react-native';
 import {connect} from 'react-redux';
-import {sendVcode, loginApp} from '../../redux/actions/LoginActions';
+import {sendVcode} from '../../redux/actions/LoginActions';
 import {CheckedPhone, CheckedEmail} from '../../utils/Config';
+import commonStyle from "../../styles";
 
-let wait;
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -23,8 +23,8 @@ class Login extends Component {
       emailNum: "",
       codeNum: "",
       vcodeText: "获取验证码",
-      userTextInputBorder: "#ddd",
-      codeTextInputBorder: "#ddd",
+      userInputBorder: "#ddd",
+      codeInputBorder: "#ddd",
       vcode_disabled: false,
       phoneNumSigin: true,
       clearIcon: false,
@@ -36,37 +36,7 @@ class Login extends Component {
   }
 
   componentWillUnmount() {
-    this.timer && clearInterval(this.timer);
-  }
 
-  waitTime = () => {
-    const that = this;
-    if (wait === 0) {
-      that.setState({ // 时间为0时, 并可以重新发送code
-        vcode_disabled: false,
-        vcodeText: "重新发送"
-      });
-      that.timer && clearInterval(that.timer)
-    } else {
-      that.setState({
-        vcode_disabled: true,
-        vcodeText: wait + " 秒"
-      });
-      wait--;
-    }
-    console.log(wait)
-  };
-
-  _userOnFocus() {
-    this.setState({
-      userTextInputBorder: "red"
-    })
-  }
-
-  _userOnBlur() {
-    this.setState({
-      userTextInputBorder: "#ddd"
-    })
   }
 
   onPhoneNumChange(value) {
@@ -77,15 +47,15 @@ class Login extends Component {
     });
   }
 
-  _codeOnFocus() {
+  _userOnFocus() {
     this.setState({
-      codeTextInputBorder: "red"
+      userInputBorder: ColorStore.themeColor
     })
   }
 
-  _codeOnBlur() {
+  _userOnBlur() {
     this.setState({
-      codeTextInputBorder: "#ddd"
+      userInputBorder: "#ddd"
     })
   }
 
@@ -105,6 +75,24 @@ class Login extends Component {
     });
   }
 
+  onVcodeNumChange(value) {
+    this.setState({
+      codeNum: value
+    })
+  }
+
+  _codeOnFocus() {
+    this.setState({
+      codeInputBorder: ColorStore.themeColor
+    })
+  }
+
+  _codeOnBlur() {
+    this.setState({
+      codeInputBorder: "#ddd"
+    })
+  }
+
   // 切换注册方式
   changeSiginType() {
     const {phoneNumSigin} = this.state;
@@ -113,71 +101,15 @@ class Login extends Component {
     })
   }
 
-  // 发送验证码按钮并检测手机号/邮箱
   bindSendCodeNum() {
-    this.props.dispatch(sendVcode({mobile: '18266913301'}));
-    /*const that = this;
-    const {phoneNum, emailNum, phoneNumSigin} = this.state;
-    console.log(phoneNumSigin, '登录方式');
-    if (phoneNumSigin) {
-      if (!CheckedPhone(phoneNum)) {
-        ToastAndroid.showWithGravity('手机号格式不正确', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else {
-        that.setState({vcode_disabled: true});
-        wait = 60; //重新赋值
-        that.refs["vcode"].focus();
-        // Action.sendVerifyCode({mobile: phoneNum});
-        that.timer = setInterval(() => {
-          that.waitTime();
-        }, 1000);
-      }
-    } else {
-      if (!CheckedEmail(emailNum)) {
-        ToastAndroid.showWithGravity('邮箱格式不正确', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else {
-        console.log(emailNum, 'emailNum--->>>');
-        that.setState({vcode_disabled: true});
-        wait = 60; //重新赋值
-        that.refs["vcode"].focus();
-        // Action.sendVerifyCode({email: emailNum});
-        that.timer = setInterval(() => {
-          that.waitTime();
-        }, 1000);
-      }
-    }*/
+
   }
 
-  onVcodeNumChange(value) {
-    this.setState({
-      codeNum: value
-    })
+  bindSignInBtn(){
+
   }
 
-  // 登录APP
-  bindSignInBtn() {
-    Actions.tabbar();
 
-    const {phoneNumSigin, phoneNum, emailNum, codeNum} = this.state;
-    if (phoneNumSigin) { // 手机号登录
-      if (!phoneNum) {
-        ToastAndroid.showWithGravity('请输入手机号', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else if (CheckedPhone(phoneNum) && !codeNum) {
-        ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else if ((codeNum.length === 6) && CheckedPhone(phoneNum)) {
-        Keyboard.dismiss();
-        // Action.signInApp({mobile: phoneNum, vcode: codeNum});
-      }
-    } else { // 邮箱登录
-      if (!emailNum) {
-        ToastAndroid.showWithGravity('请输入邮箱', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else if (CheckedEmail(emailNum) && !codeNum) {
-        ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
-      } else if ((codeNum.length === 6) && CheckedEmail(emailNum)) {
-        Keyboard.dismiss();
-        // Action.signInApp({email: emailNum, vcode: codeNum});
-      }
-    }
-  }
 
   render() {
     const {
@@ -185,47 +117,29 @@ class Login extends Component {
       clearIcon,
       vcodeText,
       vcode_disabled,
-      userTextInputBorder,
-      codeTextInputBorder
+      userInputBorder,
+      codeInputBorder
     } = this.state;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <View style={[styles.topLogoContainer]}>
+        <View style={styles.topLogoContainer}>
           <View style={styles.logoContainer}>
             <Image style={styles.logoImg} source={ImageStore.commonPic.logo}/>
           </View>
-          <Text
-            style={[commonStyle.fontSize24, commonStyle.color333, commonStyle.fontWeight]}>{TextStore.welcome}</Text>
+          <Text style={styles.welcome}>{TextStore.welcome}</Text>
         </View>
-
-        <View style={[styles.inputContainer, {borderColor: userTextInputBorder}]}>
-          {
-            !phoneNumSigin &&
-            <TextInput
-              placeholder={TextStore.emailPlaceholder}
-              placeholderTextColor={'red'}
-              underlineColorAndroid="transparent"
-              maxLength={40}
-              keyboardType={'email-address'}
-              style={[commonStyle.flex1, commonStyle.fontSize16, {padding: 0}]}
-              onChangeText={(text) => this.onEmailTextInput(text)}
-              value={this.state.emailNum}
-              onFocus={() => this._userOnFocus()}
-              onBlur={() => this._userOnBlur()}
-            />
-          }
-
+        <View style={[styles.inputContainer, {borderColor: userInputBorder}]}>
           {
             phoneNumSigin &&
-            <View style={[commonStyle.row, commonStyle.flex1, commonStyle.alignItem]}>
-              <Text style={commonStyle.fontSize16}>+86</Text>
+            <View style={styles.inputContent}>
+              <Text>+86</Text>
               <TextInput
                 placeholder={TextStore.phonePlaceholder}
-                placeholderTextColor={'red'}
+                placeholderTextColor={"#999"}
                 underlineColorAndroid="transparent"
                 maxLength={11}
                 keyboardType={'numeric'}
-                style={[commonStyle.flex1, commonStyle.fontSize16, {padding: 0, paddingLeft: 10}]}
+                style={[styles.inputStyle, {paddingLeft: 10}]}
                 onChangeText={(text) => this.onPhoneNumChange(text)}
                 value={this.state.phoneNum}
                 onFocus={() => this._userOnFocus()}
@@ -233,11 +147,25 @@ class Login extends Component {
               />
             </View>
           }
-
+          {
+            !phoneNumSigin &&
+            <TextInput
+              placeholder={TextStore.emailPlaceholder}
+              placeholderTextColor={"#999"}
+              underlineColorAndroid="transparent"
+              maxLength={40}
+              keyboardType={'email-address'}
+              style={styles.inputStyle}
+              onChangeText={(text) => this.onEmailTextInput(text)}
+              value={this.state.emailNum}
+              onFocus={() => this._userOnFocus()}
+              onBlur={() => this._userOnBlur()}
+            />
+          }
           {
             clearIcon ?
               <TouchableOpacity
-                style={[styles.wrongIconContent]}
+                style={styles.wrongIconContent}
                 activeOpacity={0.5}
                 onPress={() => this.clearPhoneNum()}
               >
@@ -247,38 +175,34 @@ class Login extends Component {
               null
           }
         </View>
-
-        <View style={[styles.inputContainer, {borderColor: codeTextInputBorder}]}>
+        <View style={[styles.inputContainer, {borderColor: codeInputBorder}]}>
           <TextInput
             ref="vcode"
             placeholder={TextStore.vCodePlaceholder}
-            placeholderTextColor={'red'}
+            placeholderTextColor={"#999"}
             underlineColorAndroid="transparent"
             keyboardType={'numeric'}
             maxLength={6}
-            style={[commonStyle.flex1, commonStyle.fontSize16, {padding: 0}]}
+            style={styles.inputStyle}
             onChangeText={(text) => this.onVcodeNumChange(text)}
             value={this.state.codeNum}
             onFocus={() => this._codeOnFocus()}
             onBlur={() => this._codeOnBlur()}
           />
-          <View style={[styles.sendCodeContainer]}>
-            <TouchableOpacity
-              style={[commonStyle.flex1, commonStyle.center]}
-              disabled={vcode_disabled}
-              onPress={() => this.bindSendCodeNum()}
-            >
-              <Text style={[commonStyle.fontSize16]}>{vcodeText}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[styles.sendCodeBtn, commonStyle.center]}
+            disabled={vcode_disabled}
+            onPress={() => this.bindSendCodeNum()}
+          >
+            <Text style={styles.vcodeText}>{vcodeText}</Text>
+          </TouchableOpacity>
         </View>
-
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.signInbtn}
           onPress={() => this.bindSignInBtn()}
         >
-          <Text style={[commonStyle.fontSize16, commonStyle.color255]}>{TextStore.login}</Text>
+          <Text style={styles.loginText}>{TextStore.login}</Text>
         </TouchableOpacity>
         <Text style={styles.tipsText}>{TextStore.loginDynamically}</Text>
 
@@ -304,9 +228,9 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#fff'
+    justifyContent: 'center',
+    backgroundColor: "#fff"
   },
   topLogoContainer: {
     marginBottom: 60
@@ -321,45 +245,27 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10
   },
-  textInput: {
-    height: 50,
-    marginBottom: 30
-  },
-  signInbtn: {
-    height: 45,
-    marginTop: 30,
-    borderRadius: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red'
-  },
-  tipsText: {
-    textAlign: 'center',
-    marginTop: 15,
-    fontSize: FONT_SIZE(14),
-    color: "#999"
-  },
-  selectBottomContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH - 40,
-    position: 'absolute',
-    bottom: 30,
-    marginLeft: 20
-  },
-  selectIcon: {
-    fontSize: 40,
-    color: '#d8d8d8'
-  },
-  selectIconColor: {
-    color: 'red'
+  welcome: {
+    fontSize: 28,
+    color: "#333",
+    fontWeight: "500"
   },
   inputContainer: {
     flexDirection: 'row',
-    height: 40,
+    height: 50,
     borderBottomWidth: 1.5,
-    marginBottom: 30,
+    alignItems: 'center',
+    marginBottom: 30
+  },
+  inputContent: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center'
+  },
+  inputStyle: {
+    flex: 1,
+    fontSize: 16,
+    padding: 0,
   },
   wrongIconContent: {
     width: 60,
@@ -373,9 +279,46 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#999'
   },
-  sendCodeContainer: {
+  sendCodeBtn: {
     height: 40,
-    width: 100
+    width: 100,
+  },
+  vcodeText: {
+    fontSize: 16,
+    color: ColorStore.themeColor
+  },
+  signInbtn: {
+    height: 45,
+    marginTop: 30,
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: ColorStore.themeColor
+  },
+  loginText: {
+    fontSize: 16,
+    color: "#fff"
+  },
+  tipsText: {
+    textAlign: 'center',
+    marginTop: 15,
+    fontSize: 12,
+    color: "#999"
+  },
+  selectBottomContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: SCREEN_WIDTH-40,
+    position: 'absolute',
+    bottom: 30,
+    marginLeft: 20
+  },
+  selectIcon: {
+    fontSize: 40,
+    color: '#d8d8d8'
+  },
+  selectIconColor: {
+    color: ColorStore.themeColor
   },
 });
 

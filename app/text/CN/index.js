@@ -1,12 +1,14 @@
+import LocalStore from '../../utils/LocalStore';
+import {slogan} from '../../res/text.json';
 export default {
   /**
    * 启动引导登录页
    */
   login: "登录",
-  appName: "快挖",
-  slogan: "快挖在云端 小微大不同",
+  appName: LocalStore.deviceInfo.appName,
+  slogan: slogan,
   initApp: '立即体验',
-  welcome: '欢迎来到快挖',
+  welcome: '欢迎来到' + LocalStore.deviceInfo.appName,
   emailPlaceholder: '请输入邮箱',
   phonePlaceholder: '请输入手机号',
   vCodePlaceholder: '请输入验证码',

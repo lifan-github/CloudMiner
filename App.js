@@ -21,21 +21,21 @@ import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
 // console.log(store,'store123')
-import './app/utils/Global';
-import ImageStore from './app/images';
+import './app/utils/Global'; // 全局变量
 import TabIcon from './app/components/TabIcon';
-
+//====启动登录页=====//
 import Starting from './app/pages/Login/Starting';
 import Guide from './app/pages/Login/Guide';
 import Login from './app/pages/Login/Login';
-
+//======首页=======//
 import Home from './app/pages/Home';
 import Notice from './app/pages/Home/Notice';
-
+//======商品页=======//
 import Product from './app/pages/Product';
 import Product2 from './app/pages/Product/Product2';
+//======我的页=======//
 import Mine from './app/pages/Mine';
-
+//======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
 
 const reducerCreate = params => {
