@@ -13,7 +13,8 @@ import {
 import {connect} from 'react-redux';
 import {sendVcode} from '../../redux/actions/LoginActions';
 import {CheckedPhone, CheckedEmail} from '../../utils/Config';
-import commonStyle from "../../styles";
+
+import {CountDownText} from '../../components/CountDown';
 
 class Login extends Component {
   constructor(props) {
@@ -28,6 +29,8 @@ class Login extends Component {
       vcode_disabled: false,
       phoneNumSigin: true,
       clearIcon: false,
+      startTime: false, // 开始计时
+      code_disabled: false
     }
   }
 
@@ -102,14 +105,23 @@ class Login extends Component {
   }
 
   bindSendCodeNum() {
-
+    console.log("开始倒计时了。。。。");
+    this.setState({
+      startTime: true,
+      code_disabled: true
+    })
   }
 
-  bindSignInBtn(){
-
+  afterEndTime(){
+    console.log("倒计时结束了。。。。");
+    this.setState({
+      code_disabled: false
+    })
   }
 
+  bindSignInBtn() {
 
+  }
 
   render() {
     const {
@@ -118,7 +130,9 @@ class Login extends Component {
       vcodeText,
       vcode_disabled,
       userInputBorder,
-      codeInputBorder
+      codeInputBorder,
+      startTime,
+      code_disabled
     } = this.state;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -189,13 +203,28 @@ class Login extends Component {
             onFocus={() => this._codeOnFocus()}
             onBlur={() => this._codeOnBlur()}
           />
-          <TouchableOpacity
+          {/*<TouchableOpacity
             style={[styles.sendCodeBtn, commonStyle.center]}
             disabled={vcode_disabled}
             onPress={() => this.bindSendCodeNum()}
           >
             <Text style={styles.vcodeText}>{vcodeText}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
+
+          <CountDownText
+            style={styles.cd}
+            countType='seconds' // 计时类型：seconds / date
+            auto={startTime} // 自动开始
+            disabled={code_disabled}
+            startSend={() => this.bindSendCodeNum()}
+            afterEnd={() => this.afterEndTime()} // 结束回调
+            timeLeft={10} // 正向计时 时间起点为0秒
+            step={-1} // 计时步长，以秒为单位，正数则为正计时，负数为倒计时
+            startText='获取验证码' // 开始的文本
+            endText='获取验证码' // 结束的文本
+            intervalText={(sec) => sec + '秒重新获取'} // 定时的文本回调
+          />
+
         </View>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -282,6 +311,7 @@ const styles = StyleSheet.create({
   sendCodeBtn: {
     height: 40,
     width: 100,
+    backgroundColor: 'red'
   },
   vcodeText: {
     fontSize: 16,
@@ -308,7 +338,7 @@ const styles = StyleSheet.create({
   selectBottomContent: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: SCREEN_WIDTH-40,
+    width: SCREEN_WIDTH - 40,
     position: 'absolute',
     bottom: 30,
     marginLeft: 20
@@ -319,6 +349,13 @@ const styles = StyleSheet.create({
   },
   selectIconColor: {
     color: ColorStore.themeColor
+  },
+  cd: {
+    textAlign: 'center',
+    color: ColorStore.themeColor,
+    fontSize: 14,
+    paddingTop: 5,
+    paddingBottom: 5
   },
 });
 
