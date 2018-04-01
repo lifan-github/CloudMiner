@@ -14,3 +14,18 @@ export function loginApp(data){
     data
   }
 }
+
+// 错误反馈全局的
+export function requestErr(msg){
+  return {
+    type: types.REQUEST_ERR,
+    msg
+  }
+}
+
+// 退出登录
+export function exitLogin(){
+  return {
+    type: types.EXIT_LOGIN,
+  }
+}

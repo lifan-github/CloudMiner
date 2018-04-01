@@ -22,7 +22,7 @@ export default class Starting extends Component {
         key: "isGuide"
       }).then(ret => {
         // 如果***找到数据***，则在then方法中返回
-        console.log(ret,'ret--->>>');
+        // console.log(ret,'ret--->>>');
         if(ret.guideIn){
           that.timerOut = setTimeout(() => {
             Actions.login();

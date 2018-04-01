@@ -11,10 +11,12 @@ import {
   ToastAndroid
 } from 'react-native';
 import {connect} from 'react-redux';
-import {sendVcode} from '../../redux/actions/LoginActions';
+import {sendVcode, loginApp, requestErr} from '../../redux/actions/LoginActions';
 import {CheckedPhone, CheckedEmail} from '../../utils/Config';
+import ModalToast from "../../components/ModalToast";
 
-import {CountDownText} from '../../components/CountDown';
+
+let countNum = 60;
 
 class Login extends Component {
   constructor(props) {
@@ -23,27 +25,46 @@ class Login extends Component {
       phoneNum: "",
       emailNum: "",
       codeNum: "",
-      vcodeText: "获取验证码",
       userInputBorder: "#ddd",
       codeInputBorder: "#ddd",
-      vcode_disabled: false,
       phoneNumSigin: true,
       clearIcon: false,
-      startTime: false, // 开始计时
-      code_disabled: false
+      code_disabled: false,
+      codeText: "获取验证码"
     }
   }
 
-  componentDidMount() {
-
+  componentWillUnmount() {
+    this.timer && clearInterval(this.timer);
+    console.log("componentWillUnmount---login");
   }
 
-  componentWillUnmount() {
+  countDown = () => {
+    if (countNum === 0) {
+      this.setState({ // 时间为0时, 并可以重新发送code
+        codeText: "获取验证码",
+        code_disabled: false,
+      });
+      this.timer && clearInterval(this.timer);
+      countNum = 60;
+    } else {
+      this.setState({
+        code_disabled: true,
+        codeText: countNum + " 秒可重新获取"
+      });
+      countNum--;
+    }
+    // console.log(countNum)
+  };
 
+  startCountDown() {
+    this.timer = setInterval(() => {
+      this.countDown();
+    }, 1000);
   }
 
   onPhoneNumChange(value) {
-    console.log(value, 'phone--->>>');
+    // console.log(value, 'phone--->>>');
     this.setState({
       phoneNum: value,
       clearIcon: true
@@ -63,7 +84,7 @@ class Login extends Component {
   }
 
   onEmailTextInput(value) {
-    console.log(value, 'eamil--->>>');
+    // console.log(value, 'eamil--->>>');
     this.setState({
       emailNum: value,
       clearIcon: true
@@ -105,35 +126,65 @@ class Login extends Component {
   }
 
   bindSendCodeNum() {
-    console.log("开始倒计时了。。。。");
-    this.setState({
-      startTime: true,
-      code_disabled: true
-    })
-  }
+    const {phoneNum, emailNum, phoneNumSigin} = this.state;
+    console.log(phoneNumSigin, '登录方式');
 
-  afterEndTime(){
-    console.log("倒计时结束了。。。。");
-    this.setState({
-      code_disabled: false
-    })
+    if (phoneNumSigin) { // 手机
+      if (!CheckedPhone(phoneNum)) {
+        ToastAndroid.showWithGravity('手机号格式不正确', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else {
+        this.refs["vcode"].focus();
+        this.setState({code_disabled: true});
+        this.startCountDown();
+        this.props.dispatch(sendVcode({mobile: phoneNum}));
+      }
+    } else {
+      if (!CheckedEmail(emailNum)) {
+        ToastAndroid.showWithGravity('邮箱格式不正确', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else {
+        this.refs["vcode"].focus();
+        this.setState({code_disabled: true});
+        this.startCountDown();
+        this.props.dispatch(sendVcode({email: phoneNum}));
+      }
+    }
   }
 
   bindSignInBtn() {
-
+    const {phoneNumSigin, phoneNum, emailNum, codeNum} = this.state;
+    if (phoneNumSigin) { // 手机号登录
+      if (!phoneNum) {
+        ToastAndroid.showWithGravity('请输入手机号', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else if (CheckedPhone(phoneNum) && !codeNum) {
+        ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else if ((codeNum.length === 6) && CheckedPhone(phoneNum)) {
+        Keyboard.dismiss();
+        this.props.dispatch(requestErr({isModal: true, content: "正在登录中", iconStatus: "loading"}));
+        this.props.dispatch(loginApp({mobile: phoneNum, vcode: codeNum}));
+      }
+    } else { // 邮箱登录
+      if (!emailNum) {
+        ToastAndroid.showWithGravity('请输入邮箱', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else if (CheckedEmail(emailNum) && !codeNum) {
+        ToastAndroid.showWithGravity('请输入验证码', ToastAndroid.SHORT, ToastAndroid.CENTER);
+      } else if ((codeNum.length === 6) && CheckedEmail(emailNum)) {
+        Keyboard.dismiss();
+        this.props.dispatch(requestErr({isModal: true, content: "正在登录中", iconStatus: "loading"}));
+        this.props.dispatch(loginApp({email: emailNum, vcode: codeNum}));
+      }
+    }
   }
 
   render() {
     const {
       phoneNumSigin,
       clearIcon,
-      vcodeText,
-      vcode_disabled,
       userInputBorder,
       codeInputBorder,
-      startTime,
+      codeText,
       code_disabled
     } = this.state;
+    const {modalVisible, loginStatusText, modalIcon} = this.props.loginReducer;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={styles.topLogoContainer}>
@@ -203,27 +254,14 @@ class Login extends Component {
             onFocus={() => this._codeOnFocus()}
             onBlur={() => this._codeOnBlur()}
           />
-          {/*<TouchableOpacity
-            style={[styles.sendCodeBtn, commonStyle.center]}
-            disabled={vcode_disabled}
+
+          <TouchableOpacity
+            style={styles.codeContent}
+            disabled={code_disabled}
             onPress={() => this.bindSendCodeNum()}
           >
-            <Text style={styles.vcodeText}>{vcodeText}</Text>
-          </TouchableOpacity>*/}
-
-          <CountDownText
-            style={styles.cd}
-            countType='seconds' // 计时类型：seconds / date
-            auto={startTime} // 自动开始
-            disabled={code_disabled}
-            startSend={() => this.bindSendCodeNum()}
-            afterEnd={() => this.afterEndTime()} // 结束回调
-            timeLeft={10} // 正向计时 时间起点为0秒
-            step={-1} // 计时步长，以秒为单位，正数则为正计时，负数为倒计时
-            startText='获取验证码' // 开始的文本
-            endText='获取验证码' // 结束的文本
-            intervalText={(sec) => sec + '秒重新获取'} // 定时的文本回调
-          />
+            <Text style={styles.codeText}>{codeText}</Text>
+          </TouchableOpacity>
 
         </View>
         <TouchableOpacity
@@ -249,121 +287,127 @@ class Login extends Component {
             <Text style={[styles.selectIcon, !phoneNumSigin && styles.selectIconColor]}>{IconStore.email}</Text>
           </TouchableOpacity>
         </View>
+        <ModalToast
+          modalStyle={styles.modalStyle}
+          modalVisible={modalVisible}
+          statusText={loginStatusText}
+          modalIcon={modalIcon}
+        />
       </KeyboardAvoidingView>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    backgroundColor: "#fff"
-  },
-  topLogoContainer: {
-    marginBottom: 60
-  },
-  logoContainer: {
-    width: 60,
-    height: 60,
-    marginBottom: 30
-  },
-  logoImg: {
-    width: 60,
-    height: 60,
-    borderRadius: 10
-  },
-  welcome: {
-    fontSize: 28,
-    color: "#333",
-    fontWeight: "500"
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    height: 50,
-    borderBottomWidth: 1.5,
-    alignItems: 'center',
-    marginBottom: 30
-  },
-  inputContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  inputStyle: {
-    flex: 1,
-    fontSize: 16,
-    padding: 0,
-  },
-  wrongIconContent: {
-    width: 60,
-    height: "100%",
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginRight: 10
-  },
-  wrongIcon: {
-    fontSize: 22,
-    color: '#999'
-  },
-  sendCodeBtn: {
-    height: 40,
-    width: 100,
-    backgroundColor: 'red'
-  },
-  vcodeText: {
-    fontSize: 16,
-    color: ColorStore.themeColor
-  },
-  signInbtn: {
-    height: 45,
-    marginTop: 30,
-    borderRadius: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: ColorStore.themeColor
-  },
-  loginText: {
-    fontSize: 16,
-    color: "#fff"
-  },
-  tipsText: {
-    textAlign: 'center',
-    marginTop: 15,
-    fontSize: 12,
-    color: "#999"
-  },
-  selectBottomContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH - 40,
-    position: 'absolute',
-    bottom: 30,
-    marginLeft: 20
-  },
-  selectIcon: {
-    fontSize: 40,
-    color: '#d8d8d8'
-  },
-  selectIconColor: {
-    color: ColorStore.themeColor
-  },
-  cd: {
-    textAlign: 'center',
-    color: ColorStore.themeColor,
-    fontSize: 14,
-    paddingTop: 5,
-    paddingBottom: 5
-  },
-});
+const
+  styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 20,
+      justifyContent: 'center',
+      backgroundColor: "#fff"
+    },
+    topLogoContainer: {
+      marginBottom: 60
+    },
+    logoContainer: {
+      width: 60,
+      height: 60,
+      marginBottom: 30
+    },
+    logoImg: {
+      width: 60,
+      height: 60,
+      borderRadius: 10
+    },
+    welcome: {
+      fontSize: 28,
+      color: "#333",
+      fontWeight: "500"
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      height: 50,
+      borderBottomWidth: 1.5,
+      alignItems: 'center',
+      marginBottom: 30
+    },
+    inputContent: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    inputStyle: {
+      flex: 1,
+      fontSize: 16,
+      padding: 0,
+    },
+    wrongIconContent: {
+      width: 60,
+      height: "100%",
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      marginRight: 10
+    },
+    wrongIcon: {
+      fontSize: 22,
+      color: '#999'
+    },
+    signInbtn: {
+      height: 45,
+      marginTop: 30,
+      borderRadius: 2,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: ColorStore.themeColor
+    },
+    loginText: {
+      fontSize: 16,
+      color: "#fff"
+    },
+    tipsText: {
+      textAlign: 'center',
+      marginTop: 15,
+      fontSize: 12,
+      color: "#999"
+    },
+    selectBottomContent: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      width: SCREEN_WIDTH - 40,
+      position: 'absolute',
+      bottom: 30,
+      marginLeft: 20
+    },
+    selectIcon: {
+      fontSize: 40,
+      color: '#d8d8d8'
+    },
+    selectIconColor: {
+      color: ColorStore.themeColor
+    },
+    codeContent: {
+      padding: 5
+    },
+    codeText: {
+      fontSize: 14,
+      color: ColorStore.themeColor
+    },
+    modalStyle: {
+      width: SCREEN_WIDTH / 2,
+      height: SCREEN_WIDTH / 2,
+      backgroundColor: '#fff',
+      borderRadius: 6,
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  });
 
 //基于全局 state ，哪些是我们想注入的 props
 function select(state) {
-  console.log(state, 'store-------9999999');
+  console.log(state.LoginRuducers,'llllllllllllll')
   return {
-    loginReducer: state.LoginReducer
+    loginReducer: state.LoginRuducers
   }
 }
 

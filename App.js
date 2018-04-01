@@ -20,7 +20,7 @@ let WeChat=require('react-native-wechat'); // 用inport 导入直接报错
 import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
-// console.log(store,'store123')
+
 import './app/utils/Global'; // 全局变量
 import TabIcon from './app/components/TabIcon';
 //====启动登录页=====//

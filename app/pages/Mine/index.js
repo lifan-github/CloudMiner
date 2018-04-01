@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
-import {Actions} from "react-native-router-flux";
 
 export default class extends Component {
   constructor(props) {
