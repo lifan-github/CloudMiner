@@ -3,7 +3,7 @@ import LocalStore from './LocalStore';
 
 let httpClient = {
   client: new Swagger({
-    url: 'https://api.wemining.org:14680/doc/customer/v1/swagger.json',
+    url: 'http: 10.10.0.110:8080/doc/customer/v1/swagger.json',
     usePromise: true,
     fetchSpecTimeout: 60000
   }),
