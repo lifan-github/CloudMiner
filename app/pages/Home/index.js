@@ -8,11 +8,19 @@ import {
 import WeChatShare from '../../components/WeChatShare';
 import {connect} from "react-redux";
 import {exitLogin} from '../../redux/actions/LoginActions';
+import {getExchangeRate, getNotice, getMiningSpeed, getNetWorker} from '../../redux/actions/HomeActions';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {}
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getExchangeRate({code: "CNY"}));
+    this.props.dispatch(getNetWorker());
+    this.props.dispatch(getNotice({status: ["published"]}));
+    this.props.dispatch(getMiningSpeed({categories: ["hashes", "revenues", "workers"]}));
   }
 
   exitLogin(){

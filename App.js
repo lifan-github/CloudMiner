@@ -124,6 +124,7 @@ export default class App extends Component {
                 >
                   <Stack
                     key="Test1"
+                    title='首页'
                     image={ImageStore.commonPic.logo}
                     selectedImage={ImageStore.commonPic.userPhoto}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}

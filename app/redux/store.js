@@ -6,6 +6,7 @@ import logger from 'redux-logger';
  * 所有的reducers
  */
 import LoginRuducers from './reducers/LoginReducers';
+import HomeReducer from './reducers/HomeReducers';
 
 /**
  * 中间件
@@ -19,7 +20,8 @@ let middlewares = [
 ];
 
 const allReducers = combineReducers({
-  LoginRuducers
+  LoginRuducers,
+  HomeReducer
 });
 
 /**
