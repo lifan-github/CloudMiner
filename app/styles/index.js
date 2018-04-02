@@ -34,6 +34,9 @@ const commonStyle = {
   listHeight55: {
     height: 55
   },
+  paddingLR20: {
+    paddingHorizontal: 20
+  },
   paddingTb10: {
     paddingTop: 10,
     paddingBottom: 10
