@@ -1,5 +1,4 @@
 import DeviceInfo from 'react-native-device-info';
-import store from '../redux/store';
 
 const clientId = DeviceInfo.getUniqueID();
 const appName = DeviceInfo.getApplicationName();
@@ -17,10 +16,6 @@ const LocalStore = {
     systemVersion
   },
   signOutApp() {
-    const StoreInit = JSON.stringify(store.getState());  // 初始值为空字符串
-    console.log(StoreInit,'StoreInit');
-    // store = JSON.parse(StoreInit);
-    // console.log(store,'store123333');
     Actions.login({type: 'reset'});
     storage.remove({key: 'accessToken'});
     LocalStore.deviceInfo.accessToken = "";

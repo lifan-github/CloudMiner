@@ -20,3 +20,10 @@ export const GET_EXCHNAGE_RATE = 'GET_EXCHNAGE_RATE'; // 汇率
 export const GET_NOTICE = 'GET_NOTICE'; // 公告
 export const GET_MINING_SPEED = 'GET_MINING_SPEED'; // 用户收益
 export const GET_NET_WORDER = 'GET_NET_WORDER'; // 全网难度
+
+/**
+ * 我的页面
+ * @type {string}
+ */
+export const GET_MY_INFOMATION = 'GET_MY_INFOMATION'; //获取用户信息
+export const INFO_LOADED = 'INFO_LOADED'; //渲染用户信息

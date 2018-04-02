@@ -11,11 +11,6 @@ import {exitLogin} from '../../redux/actions/LoginActions';
 import {getExchangeRate, getNotice, getMiningSpeed, getNetWorker} from '../../redux/actions/HomeActions';
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
-
   componentDidMount() {
     this.props.dispatch(getExchangeRate({code: "CNY"}));
     this.props.dispatch(getNetWorker());
@@ -53,7 +48,7 @@ const styles = StyleSheet.create({
 function select(state) {
   console.log(state.LoginRuducers,'Home111111');
   return {
-    loginReducer: state.LoginRuducers
+    homeRuducers: state.HomeRuducers
   }
 }
 

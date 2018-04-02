@@ -14,7 +14,8 @@ import {
   Stack,
   Lightbox,
 } from 'react-native-router-flux';
-let WeChat=require('react-native-wechat'); // 用inport 导入直接报错
+
+let WeChat = require('react-native-wechat'); // 用inport 导入直接报错
 
 // 引入react-redux
 import {Provider} from 'react-redux';
@@ -35,6 +36,14 @@ import Product from './app/pages/Product';
 import Product2 from './app/pages/Product/Product2';
 //======我的页=======//
 import Mine from './app/pages/Mine';
+import UserInfoPage from './app/pages/Mine/UserInfo';
+import OrderPage from './app/pages/Mine/Order';
+import EarningPage from './app/pages/Mine/Earning';
+import CollectRecord from './app/pages/Mine/CollectRecord';
+import BuyingPatterns from './app/pages/Mine/BuyingPatterns';
+import NoticePage from './app/pages/Mine/Notice';
+import ExchRate from './app/pages/Mine/ExchRate';
+import Setting from './app/pages/Mine/Setting';
 //======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
 
@@ -157,7 +166,59 @@ export default class App extends Component {
                     inactiveIcon={IconStore.personal2}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
-                    <Scene component={Mine} key="mine"/>
+                    <Scene
+                      hideNavBar
+                      component={Mine}
+                      key="mine"
+                    />
+                    <Scene
+                      title='个人信息'
+                      component={UserInfoPage}
+                      key="userInfoPage"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='订单'
+                      component={OrderPage}
+                      key="orderPage"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='总收益'
+                      component={EarningPage}
+                      key="earningPage"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='收币记录'
+                      component={CollectRecord}
+                      key="collectRecord"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='购买方式'
+                      component={BuyingPatterns}
+                      key="buyingPatterns"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='公告'
+                      component={NoticePage}
+                      key="noticePage"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='汇率'
+                      component={ExchRate}
+                      key="exchRate"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='设置'
+                      component={Setting}
+                      key="setting"
+                      hideTabBar
+                    />
                   </Stack>
                 </Tabs>
                 <Scene key="errorModal" component={ErrorModal}/>

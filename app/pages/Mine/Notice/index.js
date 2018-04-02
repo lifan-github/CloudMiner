@@ -2,14 +2,17 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity
+  StyleSheet
 } from 'react-native';
 
 export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {}
+  }
+
+  componentWillMount() {
+
   }
 
   componentDidMount() {
@@ -23,12 +26,7 @@ export default class extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>欢迎来到shangpin</Text>
-        <TouchableOpacity
-          onPress={() => Actions.product2()}
-        >
-          <Text>商品内页</Text>
-        </TouchableOpacity>
+        <Text>欢迎</Text>
       </View>
     )
   }
@@ -40,4 +38,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   }
-});
+})
