@@ -119,14 +119,14 @@ export default class App extends Component {
                   tabBarPosition={'bottom'}       // tabbar在顶部还是底部，iOS默认顶部，安卓默认顶部
                   activeBackgroundColor='white'   // 选中tabbar的背景色
                   inactiveBackgroundColor='white' // 未选中tabbar的背景色
-                  activeTintColor='#4ECBFC'       // 选中tabbar图标的颜色
-                  inactiveTintColor='#aaa'        // 未选中tabbar图标的颜色
+                  activeTintColor={ColorStore.themeColor}       // 选中tabbar图标下面文字的颜色
+                  inactiveTintColor='#999'        // 未选中tabbar图标下面文字的颜色
                 >
                   <Stack
                     key="Test1"
                     title='首页'
-                    image={ImageStore.commonPic.logo}
-                    selectedImage={ImageStore.commonPic.userPhoto}
+                    activeIcon={IconStore.home}
+                    inactiveIcon={IconStore.home2}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
                     <Scene
@@ -142,8 +142,8 @@ export default class App extends Component {
                   <Stack
                     key='Test2'
                     title='商品'
-                    image={ImageStore.commonPic.logo}
-                    selectedImage={ImageStore.commonPic.userPhoto}
+                    activeIcon={IconStore.miners}
+                    inactiveIcon={IconStore.miners2}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
                     <Scene component={Product} key="product"/>
@@ -153,8 +153,8 @@ export default class App extends Component {
                   <Stack
                     key="Test3"
                     title='我的'
-                    image={ImageStore.commonPic.logo}
-                    selectedImage={ImageStore.commonPic.userPhoto}
+                    activeIcon={IconStore.personal}
+                    inactiveIcon={IconStore.personal2}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
                     <Scene component={Mine} key="mine"/>

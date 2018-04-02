@@ -12,10 +12,6 @@ export default class extends Component {
     this.state = {}
   }
 
-  componentWillMount() {
-   console.log("componentWillMount333")
-  }
-
   componentDidMount() {
     console.log("componentDidMount333")
   }
