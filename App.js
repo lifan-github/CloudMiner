@@ -44,8 +44,11 @@ import BuyingPatterns from './app/pages/Mine/BuyingPatterns';
 import NoticePage from './app/pages/Mine/Notice';
 import ExchRate from './app/pages/Mine/ExchRate';
 import Setting from './app/pages/Mine/Setting';
+import BtcAddress from "./app/pages/Mine/Setting/BtcAddress";
+import AboutUs from './app/pages/Mine/AboutUs';
 //======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
+
 
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
@@ -217,6 +220,18 @@ export default class App extends Component {
                       title='设置'
                       component={Setting}
                       key="setting"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='收币地址'
+                      component={BtcAddress}
+                      key="btcAddress"
+                      hideTabBar
+                    />
+                    <Scene
+                      title='关于我们'
+                      component={AboutUs}
+                      key="aboutUs"
                       hideTabBar
                     />
                   </Stack>

@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
 });
 
 function select(state) {
-  console.log(state.LoginRuducers,'Home111111');
+  console.log(state.HomeReducer,'Home111111');
   return {
-    homeRuducers: state.HomeRuducers
+    homeRuducers: state.HomeReducer
   }
 }
 

@@ -6,6 +6,7 @@ let homeInit = {
   notices: {}, // 公告
   miningSpeed: {}, // 收益
   netWorker: {}, // 全网难度
+  rateRefreshing: false, // 汇率页面刷新状态
 };
 
 export default function HomeReducer(state = homeInit, action) {
