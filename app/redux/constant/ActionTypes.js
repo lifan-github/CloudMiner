@@ -27,3 +27,4 @@ export const GET_NET_WORDER = 'GET_NET_WORDER'; // 全网难度
 export const GET_MY_INFOMATION = 'GET_MY_INFOMATION'; //获取用户信息
 export const INFO_LOADED = 'INFO_LOADED'; //渲染用户信息
 export const UPLODA_HEAD_IMG = 'UPLODA_HEAD_IMG'; //上传用户头像
+export const SET_USER_NAME = 'SET_USER_NAME'; //更改用户昵称

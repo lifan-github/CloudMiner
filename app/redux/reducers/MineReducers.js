@@ -20,6 +20,9 @@ export default function MineReducer(state = mineInit, action) {
     case types.UPLODA_HEAD_IMG:
       uploadHeadImg(action.data);
       return state;
+    case types.SET_USER_NAME:
+      setUserName(action.data);
+      return state;
     default:
       return state;
   }
@@ -38,13 +41,12 @@ function getMyInfomation() {
         })
       }).catch((err) => {
       console.log(err, '获取用户信息111');
-      //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
-      Actions.errorModal();
-      store.dispatch(errRequest())
+      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
+      store.dispatch(errRequest()); //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
     })
   }).catch((err) => {
     console.log(err, '获取用户信息222');
-    Actions.errorModal();
+    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
     store.dispatch(errRequest())
   })
 }
@@ -68,6 +70,28 @@ function uploadHeadImg(data) {
     })
   }).catch((err) => {
     console.log(err, '上传用户头像222');
+    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
+  })
+}
+
+// 更改用户昵称
+function setUserName(data) {
+  httpClient.client.then(function (event) {
+    event.me.updateProfile(data)
+      .then(function (res) {
+        httpClient.resBack(res, function () {
+          if (res.status === 200) {
+            console.log(res, "更改用户昵称!");
+            getMyInfomation();
+            httpClient.errorModal({res_status: "ok", icon_type: "success", content: "上传成功"});
+          }
+        })
+      }).catch((err) => {
+      console.log(err, '更改用户昵称111');
+      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
+    })
+  }).catch((err) => {
+    console.log(err, '更改用户昵称222');
     httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
   })
 }

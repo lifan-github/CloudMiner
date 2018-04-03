@@ -29,3 +29,11 @@ export function uploadHeadImg(data){
     data
   }
 }
+
+//昵称更改
+export function setUserName(data){
+  return {
+    type: types.SET_USER_NAME,
+    data
+  }
+}
