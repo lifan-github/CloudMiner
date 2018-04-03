@@ -2,36 +2,38 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {connect} from 'react-redux';
 
-export default class extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
-
-  componentWillMount() {
-    console.log("componentWillMount");
-  }
-
+class ErrorModal extends Component {
   componentDidMount() {
-    console.log("componentDidMount");
-    this.timer = setTimeout(() => {
-      Actions.pop();
-    },3000)
+    const {res_status} = this.props;
+    if(res_status !== null){
+      this.timer = setTimeout(() => {
+        Actions.pop();
+      },1500)
+    }
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
-    this.timer && clearTimeout(this.timer)
+    this.timer && clearTimeout(this.timer);
   }
 
   render() {
+    const {icon_type, content} = this.props;
     return (
       <View style={styles.container}>
-        <Text>errrrrrrrr0000999</Text>
+        <TouchableOpacity style={styles.modalContainer}>
+          <View style={styles.modalStyle}>
+            {icon_type === "loading" && <ActivityIndicator style={styles.iconStyle} color="#fff" size="large"/>}
+            {icon_type === "fail" && <Text style={styles.icon}>{IconStore.wrong}</Text>}
+            {icon_type === "success" && <Text style={styles.icon}>{IconStore.right}</Text>}
+            <Text style={styles.tips}>{content}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -39,7 +41,7 @@ export default class extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(52,52,52,0.5)',
+    backgroundColor: 'rgba(0,0,0,0)',
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -48,4 +50,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  modalContainer: {
+    width: SCREEN_WIDTH/2,
+    height: SCREEN_WIDTH/2,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 6
+  },
+  iconStyle: {
+    marginBottom: 20
+  },
+  tips: {
+    fontSize: 18,
+    color: '#fff'
+  },
+  icon: {
+    fontSize: 40,
+    color: "#fff"
+  },
+  modalStyle: {
+    alignItems: 'center'
+  }
 });
+
+
+function select(state) {
+  return {
+    homeReducer: state.HomeReducer
+  }
+}
+
+export default connect(select)(ErrorModal);

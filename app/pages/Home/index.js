@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {
   View,
+  Text,
   StyleSheet,
+  TouchableOpacity
 } from 'react-native';
-import WeChatShare from '../../components/WeChatShare';
 import {connect} from "react-redux";
+import WeChatShare from '../../components/WeChatShare';
 import {getExchangeRate, getNotice, getMiningSpeed, getNetWorker} from '../../redux/actions/HomeActions';
 
 class Home extends Component {
@@ -33,9 +35,8 @@ const styles = StyleSheet.create({
 });
 
 function select(state) {
-  console.log(state.HomeReducer,'Home111111');
   return {
-    homeRuducers: state.HomeReducer
+    homeReducer: state.HomeReducer
   }
 }
 

@@ -42,11 +42,9 @@ function getExchangeRate(para) {
         })
       }).catch((err) => {
       console.log(err, '汇率111');
-      Actions.errorModal();
     })
   }).catch((err) => {
     console.log(err, '汇率222');
-    Actions.errorModal();
   })
 }
 

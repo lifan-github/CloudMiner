@@ -2,7 +2,6 @@
  * 全局APP
  * @type {string}
  */
-
 export const REQUEST_ERR = 'REQUEST_ERR'; //错误反馈
 /**
  * 登录页

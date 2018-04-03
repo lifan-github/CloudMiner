@@ -59,16 +59,16 @@ function uploadHeadImg(data) {
           if (res.status === 200) {
             console.log(res, "上传用户头像!");
             getMyInfomation();
+            httpClient.errorModal({res_status: "ok", icon_type: "success", content: "上传成功"});
           }
         })
       }).catch((err) => {
       console.log(err, '上传用户头像111');
-      //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
-      Actions.errorModal();
+      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
     })
   }).catch((err) => {
     console.log(err, '上传用户头像222');
-    Actions.errorModal();
+    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
   })
 }
 

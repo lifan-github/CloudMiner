@@ -44,7 +44,7 @@ class UserInfo extends Component {
       cropperCircleOverlay: true
     }).then(image => {
       const uri = "data:" + image.mime + ";base64," + image.data;
-      Actions.errorModal();
+      Actions.errorModal({res_status: null, icon_type: "loading", content: "头像上传中"});
       this.props.dispatch(uploadHeadImg(uri));
       console.log(image);
     });
@@ -61,7 +61,7 @@ class UserInfo extends Component {
       cropperCircleOverlay: true
     }).then(image => {
       const uri = "data:" + image.mime + ";base64," + image.data;
-      Actions.errorModal();
+      Actions.errorModal({res_status: null, icon_type: "loading", content: "头像上传中"});
       this.props.dispatch(uploadHeadImg(uri));
       console.log(image);
     });
