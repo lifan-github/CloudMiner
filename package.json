@@ -14,6 +14,7 @@
     "react-native-device-info": "^0.21.4",
     "react-native-image-crop-picker": "^0.20.0",
     "react-native-router-flux": "^4.0.0-beta.28",
+    "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-storage": "^0.2.2",
     "react-native-swiper": "^1.5.13",
     "react-native-wechat": "^1.9.9",

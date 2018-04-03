@@ -28,3 +28,10 @@ export const GET_MY_INFOMATION = 'GET_MY_INFOMATION'; //获取用户信息
 export const INFO_LOADED = 'INFO_LOADED'; //渲染用户信息
 export const UPLODA_HEAD_IMG = 'UPLODA_HEAD_IMG'; //上传用户头像
 export const SET_USER_NAME = 'SET_USER_NAME'; //更改用户昵称
+
+/**
+ * 商品页面
+ * @type {string}
+ */
+export const GET_ALL_PRODUCT = 'GET_ALL_PRODUCT'; //获取商品列表
+export const PRODUCT_LOADED = 'PRODUCT_LOADED'; //渲染商品列表

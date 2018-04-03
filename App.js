@@ -163,8 +163,15 @@ export default class App extends Component {
                     inactiveIcon={IconStore.miners2}
                     transitionConfig={() => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})}
                   >
-                    <Scene component={Product} key="product"/>
-                    <Scene component={Product2} key="product2"/>
+                    <Scene
+                      hideNavBar
+                      component={Product}
+                      key="product"
+                    />
+                    <Scene
+                      component={Product2}
+                      key="product2"
+                    />
                   </Stack>
 
                   <Stack
