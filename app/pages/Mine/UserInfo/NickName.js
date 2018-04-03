@@ -5,7 +5,16 @@ import {
   StyleSheet
 } from 'react-native';
 
-export default class BtcAddress extends Component {
+export default class extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+
+  componentWillMount() {
+
+  }
+
   componentDidMount() {
 
   }
@@ -17,7 +26,7 @@ export default class BtcAddress extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>欢迎</Text>
+        <Text>欢迎mmm</Text>
       </View>
     )
   }
@@ -29,4 +38,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   }
-});
+})

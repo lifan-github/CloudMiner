@@ -21,3 +21,11 @@ export function errRequest(data){
     data
   }
 }
+
+//上传头像
+export function uploadHeadImg(data){
+  return {
+    type: types.UPLODA_HEAD_IMG,
+    data
+  }
+}

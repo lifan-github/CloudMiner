@@ -17,6 +17,9 @@ export default function MineReducer(state = mineInit, action) {
       return Object.assign({},state,{userInfo: action.data, mineRefreshing: false});
     case types.ERR_REQUEST:
       return Object.assign({},state,{mineRefreshing: false});
+    case types.UPLODA_HEAD_IMG:
+      uploadHeadImg(action.data);
+      return state;
     default:
       return state;
   }
@@ -46,4 +49,26 @@ function getMyInfomation() {
   })
 }
 
+
+// 上传用户头像
+function uploadHeadImg(data) {
+  httpClient.client.then(function (event) {
+    event.upload.uploadAvatar({avatar_data: data})
+      .then(function (res) {
+        httpClient.resBack(res, function () {
+          if (res.status === 200) {
+            console.log(res, "上传用户头像!");
+            getMyInfomation();
+          }
+        })
+      }).catch((err) => {
+      console.log(err, '上传用户头像111');
+      //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
+      Actions.errorModal();
+    })
+  }).catch((err) => {
+    console.log(err, '上传用户头像222');
+    Actions.errorModal();
+  })
+}
 

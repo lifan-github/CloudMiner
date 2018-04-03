@@ -11,6 +11,7 @@ import {
 import ListComponent from '../../../components/ListComponent';
 import {connect} from "react-redux";
 import {exitLogin} from "../../../redux/actions/LoginActions";
+import LocalStore from '../../../utils/LocalStore';
 
 class Setting extends Component {
   // 钱包下载
@@ -83,7 +84,7 @@ class Setting extends Component {
             borderBottom={true}
             rightArrowIcon={false}
             leftText={'当前版本'}
-            rightText={"2.0.0"}
+            rightText={LocalStore.deviceInfo.version}
           />
           <ListComponent
             borderBottom={false}

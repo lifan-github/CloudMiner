@@ -25,7 +25,7 @@ export default class WeChatShare extends Component {
   constructor(props) {
     super(props);
     // 注册APP(appid) ===> 建议在路由中初始化
-    WeChat.registerApp('wx8d560da3ba038e7e');
+    WeChat.registerApp('wxb04a1095ab63190c');
     this.state = {}
   }
 

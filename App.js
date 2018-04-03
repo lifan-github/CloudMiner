@@ -37,6 +37,7 @@ import Product2 from './app/pages/Product/Product2';
 //======我的页=======//
 import Mine from './app/pages/Mine';
 import UserInfoPage from './app/pages/Mine/UserInfo';
+import NickName from './app/pages/Mine/UserInfo/NickName';
 import OrderPage from './app/pages/Mine/Order';
 import EarningPage from './app/pages/Mine/Earning';
 import CollectRecord from './app/pages/Mine/CollectRecord';
@@ -46,6 +47,7 @@ import ExchRate from './app/pages/Mine/ExchRate';
 import Setting from './app/pages/Mine/Setting';
 import BtcAddress from "./app/pages/Mine/Setting/BtcAddress";
 import AboutUs from './app/pages/Mine/AboutUs';
+import Clause from './app/pages/Mine/AboutUs/Clause';
 //======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
 
@@ -84,7 +86,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    WeChat.registerApp('wx8d560da3ba038e7e');
+    WeChat.registerApp('wxb04a1095ab63190c');
   }
 
   render() {
@@ -145,8 +147,11 @@ export default class App extends Component {
                       component={Home}
                       key="home"
                       title={'首页'}
+                      titleStyle={styles.titleStyles}
                       onRight={() => alert('Right button')}
                       rightTitle="分享"
+                      onLeft={() => alert('Right button')}
+                      renderLeftButton={() => <View/>}
                     />
                     <Scene component={Notice} key="notice" title="公告"/>
                   </Stack>
@@ -179,60 +184,108 @@ export default class App extends Component {
                       component={UserInfoPage}
                       key="userInfoPage"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
+                    <Scene
+                      title='昵称'
+                      component={NickName}
+                      key="nickName"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='订单'
                       component={OrderPage}
                       key="orderPage"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='总收益'
                       component={EarningPage}
                       key="earningPage"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='收币记录'
                       component={CollectRecord}
                       key="collectRecord"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='购买方式'
                       component={BuyingPatterns}
                       key="buyingPatterns"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='公告'
                       component={NoticePage}
                       key="noticePage"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='汇率'
                       component={ExchRate}
                       key="exchRate"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='设置'
                       component={Setting}
                       key="setting"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='收币地址'
                       component={BtcAddress}
                       key="btcAddress"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                     <Scene
                       title='关于我们'
                       component={AboutUs}
                       key="aboutUs"
                       hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
+                    <Scene
+                      title='服务与隐私'
+                      component={Clause}
+                      key="clause"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
                     />
                   </Stack>
                 </Tabs>
@@ -249,16 +302,10 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: '#eee',
-    height: 49,
+    height: 50,
   },
-  shareButton: {
-    width: 80,
-    height: 37,
-    position: 'absolute',
-    bottom: 4,
-    right: 2,
-    padding: 8,
-    color: 'blue',
-    backgroundColor: 'red'
+  titleStyles: {
+    color: '#333',
+    alignSelf: 'center'
   }
 });
