@@ -33,5 +33,6 @@ export const SET_USER_NAME = 'SET_USER_NAME'; //更改用户昵称
  * 商品页面
  * @type {string}
  */
-export const GET_ALL_PRODUCT = 'GET_ALL_PRODUCT'; //获取商品列表
-export const PRODUCT_LOADED = 'PRODUCT_LOADED'; //渲染商品列表
+export const GET_PRODUCT = 'GET_PRODUCT'; //获取商品列表
+export const PRODUCT_T_LOADED = 'PRODUCT_T_LOADED'; //渲染商品列表（按台）
+export const PRODUCT_S_LOADED = 'PRODUCT_S_LOADED'; //渲染商品列表（按算力）

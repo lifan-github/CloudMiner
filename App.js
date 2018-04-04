@@ -33,7 +33,7 @@ import Home from './app/pages/Home';
 import Notice from './app/pages/Home/Notice';
 //======商品页=======//
 import Product from './app/pages/Product';
-import Product2 from './app/pages/Product/Product2';
+import ToDetailVia from './app/pages/Product/ToDetailVia';
 //======我的页=======//
 import Mine from './app/pages/Mine';
 import UserInfoPage from './app/pages/Mine/UserInfo';
@@ -169,8 +169,10 @@ export default class App extends Component {
                       key="product"
                     />
                     <Scene
-                      component={Product2}
-                      key="product2"
+                      hideNavBar
+                      hideTabBar
+                      component={ToDetailVia}
+                      key="toDetailVia"
                     />
                   </Stack>
 

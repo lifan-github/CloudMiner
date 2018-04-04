@@ -6,47 +6,35 @@ import {
 import {connect} from 'react-redux';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ProductFlatListComponent from './ProductFlatListComponent';
-import {getAllProduct} from '../../redux/actions/ProductActions';
+import {getProduct} from '../../redux/actions/ProductActions';
 
 class Product extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialPage: 0,
-      refreshing: true,
-    };
-  }
-
   componentDidMount() {
-    this.props.dispatch(getAllProduct("byEquipment"));
-  }
-
-  bindChangeTab(e) {
-    const index = e.i;
-    if (index === 0) {
-      // Action.getAllProduct("byEquipment");
-    } else {
-      // Action.getAllProduct("byHashrate");
-    }
+    this.props.dispatch(getProduct("byEquipment"));
+    this.props.dispatch(getProduct("byHashrate"));
   }
 
   handleRefresh(type) {
-    // Action.getAllProduct(type);
+    this.props.dispatch(getProduct(type));
   }
 
   render() {
-    const {
-      // productDataT,
-      // productDataS,
-      initialPage,
-      refreshing,
-    } = this.state;
+    const {productDataT, productDataS} = this.props.productReducer;
+    const {netWorker} = this.props.homeReducer;
+    let block_diff, blockSubsidy; // 难度，出块量
+    console.log(this.props.homeReducer,'this.props.homeReducer');
+    console.log(this.props.productReducer,'商品-----》》》');
+    if(netWorker.difficulty && netWorker.difficulty.current){
+      block_diff = netWorker.difficulty.current;
+    }else{
+      block_diff = null;
+    }
+    blockSubsidy = netWorker.blockSubsidy ? netWorker.blockSubsidy : null;
 
     return (
       <View style={commonStyle.pageColor}>
         <ScrollableTabView
-          initialPage={initialPage}
-          onChangeTab={(e) => this.bindChangeTab(e)}
+          initialPage={0}
           renderTabBar={() =>
             <DefaultTabBar
               tabStyle={{paddingBottom: 0}}
@@ -60,16 +48,20 @@ class Product extends Component {
         >
           <View style={styles.FlatListContainer} tabLabel={'按台购买'}>
             <ProductFlatListComponent
-              productData={[]}
-              refreshingState={refreshing}
+              productData={productDataT}
+              currentDiff={block_diff}
+              currBlockSubsidy={blockSubsidy}
+              refreshingState={false}
               onHandleRefresh={() => this.handleRefresh("byEquipment")}
             />
           </View>
 
           <View style={styles.FlatListContainer} tabLabel={'按算力购买'}>
             <ProductFlatListComponent
-              productData={[]}
-              refreshingState={refreshing}
+              productData={productDataS}
+              currentDiff={block_diff}
+              currBlockSubsidy={blockSubsidy}
+              refreshingState={false}
               onHandleRefresh={() => this.handleRefresh("byHashrate")}
             />
           </View>
@@ -102,6 +94,7 @@ const styles = StyleSheet.create({
 function select(state) {
   return {
     productReducer: state.ProductReducer,
+    homeReducer: state.HomeReducer
   }
 }
 
