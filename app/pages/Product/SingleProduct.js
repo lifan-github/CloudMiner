@@ -11,11 +11,13 @@ import ProductTextDetails from './ProductTextDetails';
 import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
 import {connect} from "react-redux";
 import ColorStore from "../../color";
+import {getMyInfomation} from "../../redux/actions/MineActions";
 
 class SingleProduct extends Component {
   componentDidMount() {
     const productId = this.props.productId;
-    this.props.dispatch(getProductById({Id: productId}))
+    this.props.dispatch(getProductById({Id: productId}));
+    this.props.dispatch(getMyInfomation()); // 购买方式获取
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,7 +45,7 @@ class SingleProduct extends Component {
     let orderButtonBg = singleProductData.status === "outOfStock" ? "#FFF0E9" : ColorStore.themeColor;
     let orderButtonTextColor = singleProductData.status === "outOfStock" ? "#EAA794" : "#fff";
     let orderButtonText = singleProductData.status === "outOfStock" ? "已售罄" : "去下单";
-    console.log(singleProductData, 'singleProductData-----------')
+    console.log(singleProductData, 'singleProductData-----------');
     return (
       <View style={commonStyle.pageColor}>
         <ViewPagerAndroid
@@ -64,7 +66,7 @@ class SingleProduct extends Component {
         <View style={[styles.bottomFooter, commonStyle.viewBorderTop, commonStyle.between]}>
           <TouchableOpacity
             style={[commonStyle.center, styles.footBox]}
-            onPress={() => console.log("sssssss")}
+            onPress={() => Actions.proToPayment()}
           >
             <Text style={[styles.footText, styles.color333]}>{IconStore.payment} 购买方式</Text>
           </TouchableOpacity>
@@ -91,9 +93,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "blue"
+    backgroundColor: "#fff"
   },
   bottomFooter: {
     height: 50,

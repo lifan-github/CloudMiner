@@ -14,7 +14,6 @@ export default class ProductTextDetails extends Component {
   render() {
     const {data} = this.props;
     let description = data.description;
-    console.log(data.description,'商品介绍')
     return (
       <View style={styles.container}>
         {

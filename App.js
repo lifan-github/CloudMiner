@@ -203,6 +203,15 @@ export default class App extends Component {
                       component={SingleProduct}
                       key="singleProduct"
                     />
+                    <Scene
+                      title='购买方式'
+                      component={BuyingPatterns}
+                      key="proToPayment"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
                   </Stack>
 
                   <Stack
