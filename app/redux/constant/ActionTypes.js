@@ -36,3 +36,6 @@ export const SET_USER_NAME = 'SET_USER_NAME'; //更改用户昵称
 export const GET_PRODUCT = 'GET_PRODUCT'; //获取商品列表
 export const PRODUCT_T_LOADED = 'PRODUCT_T_LOADED'; //渲染商品列表（按台）
 export const PRODUCT_S_LOADED = 'PRODUCT_S_LOADED'; //渲染商品列表（按算力）
+export const GET_PRODUCT_BY_ID = 'GET_PRODUCT_BY_ID'; //获取单个商品
+export const PRODUCT_BY_ID_DATA = 'PRODUCT_BY_ID_DATA'; //渲染单个商品
+export const SLECTED_NAVBAR = 'SLECTED_NAVBAR'; //导航栏切换

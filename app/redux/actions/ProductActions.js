@@ -22,3 +22,27 @@ export function productSLoaded(data){
     data
   }
 }
+
+// 获取单个商品
+export function getProductById(data) {
+  return {
+    type: types.GET_PRODUCT_BY_ID,
+    data
+  }
+}
+
+// 渲染单个商品
+export function productByIdData(data) {
+  return {
+    type: types.PRODUCT_BY_ID_DATA,
+    data
+  }
+}
+
+// 顶部导航栏切换
+export function slectedNavBar(data) {
+  return {
+    type: types.SLECTED_NAVBAR,
+    data
+  }
+}

@@ -1,12 +1,14 @@
 import * as types from '../constant/ActionTypes';
 import httpClient from '../../utils/HttpClient';
 import store from '../store';
-import {productTLoaded, productSLoaded} from '../actions/ProductActions';
+import {productTLoaded, productSLoaded, productByIdData} from '../actions/ProductActions';
 import {pointsToYuan, formatDateDay, powerKWh} from '../../utils/Config';
 
 let productInit = {
   productDataT: [], //按台
   productDataS: [], //算力
+  navBarSlected: 0, // 导航栏切换
+  singleProductData: {}, // 单个商品
 };
 
 export default function ProductReducer(state = productInit, action) {
@@ -15,11 +17,16 @@ export default function ProductReducer(state = productInit, action) {
       getProduct(action.data);
       return state;
     case types.PRODUCT_T_LOADED:
-      console.log("ttttt----ttttt");
       return Object.assign({}, state, {productDataT: action.data});
     case types.PRODUCT_S_LOADED:
-      console.log("sssss----sssss");
       return Object.assign({}, state, {productDataS: action.data});
+    case types.GET_PRODUCT_BY_ID:
+      getProductById(action.data);
+      return state;
+    case types.PRODUCT_BY_ID_DATA:
+      return Object.assign({}, state, {singleProductData: action.data});
+    case types.SLECTED_NAVBAR:
+      return Object.assign({}, state, {navBarSlected: action.data});
     default:
       return state;
   }
@@ -65,14 +72,35 @@ function getProduct(data) {
           }
         })
       }).catch((err) => {
-      console.log(err, '获取用户信息111');
+      console.log(err, '获取商品列表');
       httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
       // store.dispatch(errRequest()); //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
     })
   }).catch((err) => {
-    console.log(err, '获取用户信息222');
+    console.log(err, '获取商品列表');
     httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
     // store.dispatch(errRequest())
   })
 }
 
+
+//单个商品
+function getProductById(data) {
+  httpClient.client.then(function (event) {
+    event.sales.getProductById(data)
+      .then(function (res) {
+        httpClient.resBack(res, function () {
+          if (res.status === 200) {
+            console.log(res, "单个商品!");
+            store.dispatch(productByIdData(res.obj));
+          }
+        })
+      }).catch((err) => {
+      console.log(err, '单个商品');
+      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
+    })
+  }).catch((err) => {
+    console.log(err, '单个商品');
+    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
+  })
+}

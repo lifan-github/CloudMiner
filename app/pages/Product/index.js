@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
-import ProductFlatListComponent from './ProductFlatListComponent';
+import FlatListComponent from './FlatListComponent';
 import {getProduct} from '../../redux/actions/ProductActions';
 
 class Product extends Component {
@@ -47,7 +47,7 @@ class Product extends Component {
           }
         >
           <View style={styles.FlatListContainer} tabLabel={'按台购买'}>
-            <ProductFlatListComponent
+            <FlatListComponent
               productData={productDataT}
               currentDiff={block_diff}
               currBlockSubsidy={blockSubsidy}
@@ -57,7 +57,7 @@ class Product extends Component {
           </View>
 
           <View style={styles.FlatListContainer} tabLabel={'按算力购买'}>
-            <ProductFlatListComponent
+            <FlatListComponent
               productData={productDataS}
               currentDiff={block_diff}
               currBlockSubsidy={blockSubsidy}

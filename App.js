@@ -1,5 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, BackHandler, StatusBar, DeviceEventEmitter, ToastAndroid} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  BackHandler,
+  StatusBar,
+  DeviceEventEmitter,
+  ToastAndroid,
+  TouchableOpacity
+} from 'react-native';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import {
   Scene,
@@ -33,7 +42,7 @@ import Home from './app/pages/Home';
 import Notice from './app/pages/Home/Notice';
 //======商品页=======//
 import Product from './app/pages/Product';
-import ToDetailVia from './app/pages/Product/ToDetailVia';
+import SingleProduct from "./app/pages/Product/SingleProduct";
 //======我的页=======//
 import Mine from './app/pages/Mine';
 import UserInfoPage from './app/pages/Mine/UserInfo';
@@ -50,6 +59,8 @@ import AboutUs from './app/pages/Mine/AboutUs';
 import Clause from './app/pages/Mine/AboutUs/Clause';
 //======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
+
+import {slectedNavBar} from './app/redux/actions/ProductActions';
 
 
 const reducerCreate = params => {
@@ -146,6 +157,7 @@ export default class App extends Component {
                     <Scene
                       component={Home}
                       key="home"
+                      hideNavBar
                       title={'首页'}
                       titleStyle={styles.titleStyles}
                       onRight={() => alert('Right button')}
@@ -169,10 +181,27 @@ export default class App extends Component {
                       key="product"
                     />
                     <Scene
-                      hideNavBar
+                      renderTitle={() =>
+                        <View style={styles.productNavBar}>
+                          <TouchableOpacity
+                            style={[styles.leftNav, styles.slecteBorder]}
+                            onPress={() => store.dispatch(slectedNavBar(0))}
+                          >
+                            <Text style={[styles.navBarText]}>商品</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={styles.leftNav}
+                            onPress={() => store.dispatch(slectedNavBar(1))}
+                          >
+                            <Text style={[styles.navBarText]}>详情</Text>
+                          </TouchableOpacity>
+                        </View>
+                      }
+                      onRight={() => alert('Right button')}
+                      rightTitle="分享"
                       hideTabBar
-                      component={ToDetailVia}
-                      key="toDetailVia"
+                      component={SingleProduct}
+                      key="singleProduct"
                     />
                   </Stack>
 
@@ -316,5 +345,24 @@ const styles = StyleSheet.create({
   titleStyles: {
     color: '#333',
     alignSelf: 'center'
+  },
+  //定制的导航
+  productNavBar: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingLeft: SCREEN_WIDTH / 5,
+    paddingRight: SCREEN_WIDTH / 5
+  },
+  leftNav: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  slecteBorder: {
+    borderBottomWidth: 2,
+    borderColor: 'red'
+  },
+  navBarText: {
+    fontSize: 18
   }
 });

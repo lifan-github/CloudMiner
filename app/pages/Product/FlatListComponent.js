@@ -32,7 +32,7 @@ export default class ProductFlatListComponent extends Component {
     return (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.SelectableBackground()}
-        onPress={() => Actions.toDetailVia({productId: item.Id})}
+        onPress={() => Actions.singleProduct({productId: item.Id})}
       >
         <View style={[styles.itemViewStyle, commonStyle.between]}>
           <View style={{flex: 1}}>

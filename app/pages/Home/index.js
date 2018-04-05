@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
 } from 'react-native';
 import {connect} from "react-redux";
 import WeChatShare from '../../components/WeChatShare';
@@ -19,19 +18,13 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <WeChatShare/>
-      </View>
+      <WeChatShare/>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+
 });
 
 function select(state) {
