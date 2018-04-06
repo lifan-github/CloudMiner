@@ -8,10 +8,24 @@ export function getExchangeRate(data){
   }
 }
 
+export function exchangeRateLoaded(data){
+  return {
+    type: types.EXCHNAGE_RATE_LOADED,
+    data
+  }
+}
+
 // 获取公告
 export function getNotice(data){
   return {
     type: types.GET_NOTICE,
+    data
+  }
+}
+
+export function noticeLoaded(data){
+  return {
+    type: types.NOTICE_LOADED,
     data
   }
 }
@@ -24,10 +38,24 @@ export function getMiningSpeed(data){
   }
 }
 
+export function miningSpeedLoaded(data){
+  return {
+    type: types.MINING_SPEED_LOADED,
+    data
+  }
+}
+
 // 获取全网难度
 export function getNetWorker(){
   return {
     type: types.GET_NET_WORDER
+  }
+}
+
+export function netWorkerLoaded(data){
+  return {
+    type: types.NET_WORDER_LOADED,
+    data
   }
 }
 

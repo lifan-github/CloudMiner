@@ -16,9 +16,13 @@ export const EXIT_LOGIN = 'EXIT_LOGIN'; // 退出登录
  * @type {string}
  */
 export const GET_EXCHNAGE_RATE = 'GET_EXCHNAGE_RATE'; // 汇率
+export const EXCHNAGE_RATE_LOADED = 'EXCHNAGE_RATE_LOADED';
 export const GET_NOTICE = 'GET_NOTICE'; // 公告
+export const NOTICE_LOADED = 'NOTICE_LOADED';
 export const GET_MINING_SPEED = 'GET_MINING_SPEED'; // 用户收益
+export const MINING_SPEED_LOADED = 'MINING_SPEED_LOADED';
 export const GET_NET_WORDER = 'GET_NET_WORDER'; // 全网难度
+export const NET_WORDER_LOADED = 'NET_WORDER_LOADED';
 
 /**
  * 我的页面

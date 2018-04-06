@@ -6,11 +6,12 @@ import {
   ViewPagerAndroid,
   TouchableOpacity
 } from 'react-native';
+import {connect} from "react-redux";
 import ProductDetails from './ProductDetails';
 import ProductTextDetails from './ProductTextDetails';
-import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
-import {connect} from "react-redux";
 import ColorStore from "../../color";
+import OrderModal from './OrderModal';
+import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
 import {getMyInfomation} from "../../redux/actions/MineActions";
 
 class SingleProduct extends Component {
@@ -37,6 +38,47 @@ class SingleProduct extends Component {
   //下单按钮
   orderButton(status) {
     console.log(status, 'status---->>>>>')
+  }
+
+  //增加订单
+  addAmount() {
+    /*const {modalData} = this.state;
+    if(modalData.qtyInStock > 0){
+      modalData.orderNum++;
+      modalData.qtyInStock--;
+      modalData.hasBuySpeed = modalData.orderNum * modalData.hashRate;
+      modalData.totalPrice = modalData.orderNum * modalData.price;
+      this.setState({modalData});
+    }else{
+      ToastAndroid.showWithGravity('库存不够啦', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    }*/
+  }
+
+  //减少订单
+  reduceAmount() {
+    /*const {modalData} = this.state;
+    if(modalData.orderNum > modalData.minQtyOfSale){
+      modalData.orderNum--;
+      modalData.qtyInStock++;
+      modalData.hasBuySpeed = modalData.orderNum * modalData.hashRate;
+      modalData.totalPrice = modalData.orderNum * modalData.price;
+      this.setState({modalData});
+    }else{
+      ToastAndroid.showWithGravity('不能小于最低起售量', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    }*/
+  }
+
+  //点击背景
+  bindTabOpacity() {
+    /*this.setState({
+      isModal: false
+    })*/
+  }
+
+  //立即购买
+  buyNow() {
+    // this.setState({isModal: false});
+    // Actions.productDetails({modalData});
   }
 
   render() {
@@ -77,6 +119,14 @@ class SingleProduct extends Component {
             <Text style={[styles.footText, {color: orderButtonTextColor}]}>{orderButtonText}</Text>
           </TouchableOpacity>
         </View>
+        <OrderModal
+          isModal={true}
+          data={singleProductData}
+          bingAdd={() => this.addAmount()}
+          bindReduce={() => this.reduceAmount()}
+          bindTabOpacity={() => this.bindTabOpacity()}
+          bindBuyNow={() => this.buyNow()}
+        />
       </View>
     )
   }

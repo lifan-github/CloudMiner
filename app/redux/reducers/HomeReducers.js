@@ -1,5 +1,7 @@
 import * as types from '../constant/ActionTypes';
 import httpClient from '../../utils/HttpClient';
+import store from '../store';
+import {exchangeRateLoaded, noticeLoaded, miningSpeedLoaded, netWorkerLoaded} from '../actions/HomeActions';
 
 let homeInit = {
   rateCny: {}, // 汇率
@@ -14,15 +16,23 @@ export default function HomeReducer(state = homeInit, action) {
     case types.GET_EXCHNAGE_RATE:
       getExchangeRate(action.data);
       return state;
+    case types.EXCHNAGE_RATE_LOADED:
+      return Object.assign({}, state, {rateCny: action.data});
     case types.GET_NOTICE:
       getNotice(action.data);
       return state;
+    case types.NOTICE_LOADED:
+      return Object.assign({}, state, {notices: action.data});
     case types.GET_MINING_SPEED:
       getMiningSpeed(action.data);
       return state;
+    case types.MINING_SPEED_LOADED:
+      return Object.assign({}, state, {miningSpeed: action.data});
     case types.GET_NET_WORDER:
       getNetWorker();
       return state;
+    case types.NET_WORDER_LOADED:
+      return Object.assign({}, state, {netWorker: action.data});
     default:
       return state;
   }
@@ -37,7 +47,7 @@ function getExchangeRate(para) {
         httpClient.resBack(res, function () {
           if (res.status === 200) {
             console.log(res, "汇率!");
-            homeInit.rateCny = Object.assign(homeInit.rateCny, res.obj);
+            store.dispatch(exchangeRateLoaded(res.obj));
           }
         })
       }).catch((err) => {
@@ -56,7 +66,7 @@ function getNotice(para) {
         httpClient.resBack(res, function () {
           if (res.status === 200) {
             console.log(res, "公告!");
-            homeInit.notices = Object.assign(homeInit.notices, res.obj);
+            store.dispatch(noticeLoaded(res.obj));
           }
         })
       }).catch((err) => {
@@ -77,7 +87,7 @@ function getMiningSpeed(para) {
         httpClient.resBack(res, function () {
           if (res.status === 200) {
             console.log(res, "获取收益!");
-            homeInit.miningSpeed = Object.assign(homeInit.miningSpeed, res.obj);
+            store.dispatch(miningSpeedLoaded(res.obj));
           }
         })
       }).catch((err) => {
@@ -98,7 +108,7 @@ function getNetWorker() {
         httpClient.resBack(res, function () {
           if (res.status === 200) {
             console.log(res, "获取全网难度!");
-            homeInit.netWorker = Object.assign(homeInit.netWorker, res.obj);
+            store.dispatch(netWorkerLoaded(res.obj));
           }
         })
       }).catch((err) => {
