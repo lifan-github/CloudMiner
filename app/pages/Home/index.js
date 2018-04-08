@@ -13,7 +13,11 @@ import {connect} from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
 import AnimNum from './AnimNum';
 import Wave from './Wave';
+import UserHashRate from './UserHashRate';
+import UserIncome from './UserIncome';
+import NetWorkDiff from './NetWorkDiff';
 import {getExchangeRate, getNotice, getMiningSpeed, getNetWorker} from '../../redux/actions/HomeActions';
+import {formatDateDay} from '../../utils/Config';
 
 
 class Home extends Component {
@@ -24,9 +28,22 @@ class Home extends Component {
     this.props.dispatch(getMiningSpeed({categories: ["hashes", "revenues", "workers"]}));
   }
 
+  onPullRefresh(){
+    this.props.dispatch(getExchangeRate({code: "CNY"}));
+    this.props.dispatch(getNetWorker());
+    this.props.dispatch(getNotice({status: ["published"]}));
+    this.props.dispatch(getMiningSpeed({categories: ["hashes", "revenues", "workers"]}));
+  }
+
   render() {
-    const {rateCny, miningSpeed} = this.props.homeReducer;
-    console.log(this.props.homeReducer,'this.props.homeReducer');
+    const {rateCny, miningSpeed, netWorker, notices} = this.props.homeReducer;
+    console.log(this.props.homeReducer, 'this.props.homeReducer');
+    let noticeShow;
+    if (notices.length > 0) {
+      noticeShow = formatDateDay(notices[0].publishedAt) + " - " + (notices[0].title).substring(0, 10) + "..."
+    } else {
+      noticeShow = "暂无公告"
+    }
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -36,72 +53,48 @@ class Home extends Component {
           end={{x: 1, y: 0}}
         >
           <View style={styles.absoluteView}>
-            <AnimNum rateCnyData={rateCny} miningSpeedData={miningSpeed}/>
+            <AnimNum
+              rateCnyData={rateCny}
+              miningSpeedData={miningSpeed}
+              netWorkerData={netWorker}
+            />
           </View>
           <View style={styles.waterAnimate}>
             <Wave/>
           </View>
         </LinearGradient>
 
-        {/*<ScrollView
+        <ScrollView
           style={styles.scrollViewContent}
           refreshControl={
             <RefreshControl
-              refreshing={this.state.isRefreshing}
+              refreshing={false}
               onRefresh={() => this.onPullRefresh()}
               colors={['#fff']}
               progressBackgroundColor={"#B9B9B9"}
             />
           }
         >
-          <View style={[common.paddingTopBottom10]}>
-            {this.speedCard(currHashes)}
-          </View>
+          <UserHashRate data={miningSpeed}/>
           <TouchableOpacity
             style={styles.noticeBox}
             activeOpacity={0.6}
             onPress={() => Actions.theNoticeHome()}
           >
-            <Text style={styles.noticeIcon}>{theIco.gi('icon-announcement')}</Text>
-            <Text style={[common.font14, common.fontColor333]}>{noticeShow}</Text>
+            <Text style={styles.noticeIcon}>{IconStore.notice}</Text>
+            <Text style={styles.noticeContent}>{noticeShow}</Text>
           </TouchableOpacity>
-
-          <View style={styles.feeBox}>
-            <Text style={[common.font12, common.fontColor999]}>当前汇率</Text>
-            <Text style={[common.font14, common.fontColor333, styles.rateCurr]}>
-              <Text>{theIco.gi('icon-RMB')}</Text>{currRmb}
-            </Text>
-          </View>
-          <View style={[styles.incomeContainer]}>
-            <Text style={[common.fontColor333, common.font14, common.fontWeight]}>收益统计</Text>
-          </View>
-
-          <View style={[common.paddingLR16, styles.cardBox]}>
-            <Text style={[common.font14, common.fontColor333]}>总收益</Text>
-            <View style={styles.rightCard}>
-              <Text style={[common.fontColor333, common.font14]}>
-                <Text style={[common.fontColor333, common.font12]}>{theIco.gi('icon-RMB')}</Text>{totalRevCny}
-              </Text>
-              <Text style={[common.fontColor999, common.font12]}>
-                <Text style={[common.fontColor999, common.font12]}>{theIco.gi('icon-BTC')}</Text>{totalRevenue}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.midLine}/>
-          <View style={[common.paddingLR16, styles.cardBox]}>
-            <Text style={[common.font14, common.fontColor333]}>余额</Text>
-            <View style={styles.rightCard}>
-              <Text style={[common.fontColor333, common.font14]}>
-                <Text style={[common.fontColor333, common.font12]}>{theIco.gi('icon-RMB')}</Text>{unSettleCny}
-              </Text>
-              <Text style={[common.fontColor999, common.font12]}>
-                <Text style={[common.fontColor999, common.font12]}>{theIco.gi('icon-BTC')}</Text>{unSettle}
-              </Text>
-            </View>
-          </View>
-
-          <MiddleCard data={netWorkerData} hashSpeed={currHashes} cnyData={currRmb}/>
-        </ScrollView>*/}
+          <UserIncome
+            rateCnyData={rateCny}
+            miningSpeedData={miningSpeed}
+            netWorkerData={netWorker}
+          />
+          <NetWorkDiff
+            data={netWorker}
+            hashSpeed={miningSpeed}
+            cnyData={rateCny}
+          />
+        </ScrollView>
       </View>
     )
   }
@@ -133,14 +126,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%'
   },
-  slash: {
-    fontSize: 20,
-    color: "#ddd",
-    alignSelf: 'center'
-  },
-  speedBox: {
-    flexGrow: 1
-  },
   noticeBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -154,48 +139,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#f5f5f5'
   },
-  incomeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderLeftWidth: 4,
-    borderLeftColor: ColorStore.themeColor,
-    paddingLeft: 12
-  },
   noticeIcon: {
     fontSize: 18,
     color: "#EAA794",
     marginRight: 10
   },
-  feeBox: {
-    paddingBottom: 10,
-    paddingTop: 10,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+  noticeContent: {
+    fontSize: 14,
+    color: "#333"
   },
-  rateCurr: {
-    marginTop: 10
-  },
-  midLine: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#ddd",
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 5,
-    marginBottom: 5
-  },
-  cardBox: {
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  rightCard: {
-    height: 45,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end'
-  }
 });
 
 function select(state) {

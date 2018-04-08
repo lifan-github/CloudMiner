@@ -5,7 +5,7 @@ import {exchangeRateLoaded, noticeLoaded, miningSpeedLoaded, netWorkerLoaded} fr
 
 let homeInit = {
   rateCny: {}, // 汇率
-  notices: {}, // 公告
+  notices: [], // 公告
   miningSpeed: {}, // 收益
   netWorker: {}, // 全网难度
   rateRefreshing: false, // 汇率页面刷新状态

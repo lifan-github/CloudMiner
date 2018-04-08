@@ -39,7 +39,6 @@ import Guide from './app/pages/Login/Guide';
 import Login from './app/pages/Login/Login';
 //======首页=======//
 import Home from './app/pages/Home';
-import Notice from './app/pages/Home/Notice';
 //======商品页=======//
 import Product from './app/pages/Product';
 import SingleProduct from "./app/pages/Product/SingleProduct";
@@ -165,7 +164,15 @@ export default class App extends Component {
                       onLeft={() => alert('Right button')}
                       renderLeftButton={() => <View/>}
                     />
-                    <Scene component={Notice} key="notice" title="公告"/>
+                    <Scene
+                      title='公告'
+                      component={NoticePage}
+                      key="theNoticeHome"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
                   </Stack>
 
                   <Stack
