@@ -15,7 +15,7 @@ export default class Starting extends Component {
       if(ret.accessToken){
         that.timerOut = setTimeout(() => {
           Actions.tabbar();
-        },2000);
+        },1500);
       }
     }).catch(err1 => {
       storage.load({
@@ -26,7 +26,7 @@ export default class Starting extends Component {
         if(ret.guideIn){
           that.timerOut = setTimeout(() => {
             Actions.login();
-          },2000);
+          },1500);
         }
       }).catch(err => {
         //如果没有找到数据且没有sync方法，

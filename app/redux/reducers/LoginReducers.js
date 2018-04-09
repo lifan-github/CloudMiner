@@ -64,7 +64,6 @@ function loginApp(data) {
           if (res.status === 200) {
             console.log(res, "登录成功!");
             initApp.userInfo = Object.assign(initApp.userInfo, res.obj);// 数据拷贝
-            LocalStore.deviceInfo.accessToken = res.headers["x-wemining-access-token"];
             storage.save({
               key: 'accessToken',
               data: {

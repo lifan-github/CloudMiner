@@ -41,6 +41,7 @@ export default function HomeReducer(state = homeInit, action) {
 // 获取汇率
 function getExchangeRate(para) {
   httpClient.client.then(function (event) {
+    console.log(event,'eventeventeventeventeventevent')
     httpClient.setHeader(event);
     event.exchange.getBtcRate(para)
       .then(function (res) {

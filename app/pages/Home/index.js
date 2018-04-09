@@ -37,7 +37,7 @@ class Home extends Component {
 
   render() {
     const {rateCny, miningSpeed, netWorker, notices} = this.props.homeReducer;
-    console.log(this.props.homeReducer, 'this.props.homeReducer');
+    // console.log(this.props.homeReducer, 'this.props.homeReducer');
     let noticeShow;
     if (notices.length > 0) {
       noticeShow = formatDateDay(notices[0].publishedAt) + " - " + (notices[0].title).substring(0, 10) + "..."
@@ -90,7 +90,7 @@ class Home extends Component {
             netWorkerData={netWorker}
           />
           <NetWorkDiff
-            data={netWorker}
+            netWorkerData={netWorker}
             hashSpeed={miningSpeed}
             cnyData={rateCny}
           />

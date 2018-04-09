@@ -6,22 +6,22 @@ import {
   ProgressBarAndroid
 } from "react-native";
 import Row from './Row';
-import {diffExt, dayGains, formatDayHours, btcExRmb} from '../../utils/Config';
+import {diffExt, dayGains, formatDayHours, btcExRmb, pointsToYuan} from '../../utils/Config';
 
 export default class NetWorkDiff extends Component {
   render() {
-    let netWorkerData = this.props.data;
+    let netWorkerData = this.props.netWorkerData; // 全网数据
+    let cnyData = this.props.cnyData; // 汇率数据
+
+    let cnyExt = cnyData.rate ? pointsToYuan(cnyData.rate) : 0;
     let current_diff = netWorkerData.difficulty ? diffExt(netWorkerData.difficulty.current) : ""; // 当前难度
 
-    let hashSpeed = this.props.hashSpeed; // hash算力(GHash/s--->>转换PT/s)
     let percentage,
       cycle_time = 1209600, //周期2个星期
       progress_bar,
       remaining_time,
-      blockSubsidy, // 区块值
       nextIncomCny, //下一难度收益RMB
-      nextIncomBtc,
-      estimateNext; // 下次难度
+      nextIncomBtc;
 
     if (netWorkerData.difficulty && netWorkerData.blockSubsidy) {
       const diff_number = netWorkerData.difficulty;
@@ -30,24 +30,20 @@ export default class NetWorkDiff extends Component {
       progress_bar = (cycle_time - (diff_number.estimateAdjustTimesAway)) / cycle_time;
       progress_bar = Number(progress_bar.toFixed(2));
       remaining_time = formatDayHours(diff_number.estimateAdjustTimesAway);
-      estimateNext = diff_number.estimateNext;
-      blockSubsidy = netWorkerData.blockSubsidy;
     }else{
       percentage = 0;
       progress_bar = 0;
       remaining_time = 0;
-      estimateNext = 0;
-      blockSubsidy = 0;
     }
 
-    if (hashSpeed.workingHashrate) {
-      nextIncomBtc = dayGains(1000, estimateNext, blockSubsidy);
-      nextIncomCny = btcExRmb(nextIncomBtc, this.props.cnyData);
+    // 下一难度收益
+    if (netWorkerData.blockSubsidy && (netWorkerData.difficulty && netWorkerData.difficulty.estimateNext)) {
+      nextIncomBtc = dayGains(1000, netWorkerData.difficulty.estimateNext, netWorkerData.blockSubsidy);
+      nextIncomCny = btcExRmb(nextIncomBtc, cnyExt);
     }else{
       nextIncomBtc = 0;
       nextIncomCny = 0;
     }
-
 
     return (
       <View style={styles.content}>

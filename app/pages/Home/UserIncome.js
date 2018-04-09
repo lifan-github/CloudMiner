@@ -17,16 +17,16 @@ export default class UserIncome extends Component {
     }
     // 总收益
     if(miningSpeedData.revenues && miningSpeedData.revenues.total){
-      totalRevenue = miningSpeedData.revenues.total;
-      totalRevCny = btcExRmb(satoBtc(absFloorNumber(miningSpeedData.revenues.total)), rateCnyData.rate);
+      totalRevenue = satoBtc(absFloorNumber(miningSpeedData.revenues.total));
+      totalRevCny = btcExRmb(satoBtc(absFloorNumber(miningSpeedData.revenues.total)), currRmb);
     }else{
       totalRevenue = 0;
       totalRevCny = 0
     }
     //余额
     if(miningSpeedData.revenues && miningSpeedData.revenues.unSettle){
-      unSettle = miningSpeedData.revenues.unSettle;
-      unSettleCny = btcExRmb(satoBtc(absFloorNumber(miningSpeedData.revenues.unSettle)), rateCnyData.rate);
+      unSettle = satoBtc(absFloorNumber(miningSpeedData.revenues.unSettle));
+      unSettleCny = btcExRmb(satoBtc(absFloorNumber(miningSpeedData.revenues.unSettle)), currRmb);
     }else{
       unSettle = 0;
       unSettleCny = 0

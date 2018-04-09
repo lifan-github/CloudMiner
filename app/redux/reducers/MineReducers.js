@@ -31,6 +31,7 @@ export default function MineReducer(state = mineInit, action) {
 // 获取用户信息
 function getMyInfomation() {
   httpClient.client.then(function (event) {
+    console.log(event,'event----->>>>>>>>>>>>>>>>>>>>123456789');
     event.me.getProfile()
       .then(function (res) {
         httpClient.resBack(res, function () {
