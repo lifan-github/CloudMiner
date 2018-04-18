@@ -6,7 +6,7 @@ import {
 import Animation from 'lottie-react-native';
 
 export default class Starting extends Component {
-  componentDidMount() {
+  /*componentDidMount() {
     const that = this;
     that.animation.play();
     storage.load({
@@ -37,6 +37,12 @@ export default class Starting extends Component {
         console.log(err,'err--->>>');
       });
     });
+  }*/
+
+  componentDidMount(){
+    this.timerOut = setTimeout(() => {
+      Actions.tabbar();
+    },1500);
   }
 
   componentWillUnmount(){
@@ -46,11 +52,11 @@ export default class Starting extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Animation
+        {/*<Animation
           ref={animation => {this.animation = animation}}
           style={{width: 300, height: 300}}
           source={require('../../images/starting')}
-        />
+        />*/}
       </View>
     )
   }

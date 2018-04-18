@@ -69,9 +69,9 @@ class Mine extends Component {
     }
     // 我的算力
     let workers = miningSpeed.workers;
-    myHash = workers.workingHashrate ? speedChange(workers.workingHashrate) : "N/A";
-    transferIn = workers.transferInHashrate ? speedChange(workers.transferInHashrate) : "N/A";
-    transferOut = workers.transferOutHashrate ? speedChange(workers.transferOutHashrate) : "N/A";
+    myHash = workers && workers.workingHashrate ? speedChange(workers.workingHashrate) : "N/A";
+    transferIn = workers && workers.transferInHashrate ? speedChange(workers.transferInHashrate) : "N/A";
+    transferOut = workers && workers.transferOutHashrate ? speedChange(workers.transferOutHashrate) : "N/A";
     return (
       <ScrollView
         style={commonStyle.pageColor}

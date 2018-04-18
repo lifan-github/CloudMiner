@@ -7,7 +7,7 @@ console.log(clientId, 'clientId--->>>');
 
 const LocalStore = {
   deviceInfo: {
-    appId: "63bd4ec5bb4fcc85038cce200e6027a9dd5a9d7c304eecbff37549069ea94331",
+    appId: "35738f84e629ef5c3ecd02732c7a9a729cab3fb4fc6a1d05dbbd662b085f243d",
     clientId: clientId,
     appName,
     version,
