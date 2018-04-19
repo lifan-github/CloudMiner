@@ -46,7 +46,6 @@ class UserInfo extends Component {
       const uri = "data:" + image.mime + ";base64," + image.data;
       Actions.errorModal({res_status: null, icon_type: "loading", content: "头像上传中"});
       this.props.dispatch(uploadHeadImg(uri));
-      console.log(image);
     });
     this.setState({modalVisible: false});
   }
@@ -63,7 +62,6 @@ class UserInfo extends Component {
       const uri = "data:" + image.mime + ";base64," + image.data;
       Actions.errorModal({res_status: null, icon_type: "loading", content: "头像上传中"});
       this.props.dispatch(uploadHeadImg(uri));
-      console.log(image);
     });
     this.setState({modalVisible: false});
   }

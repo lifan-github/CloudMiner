@@ -10,12 +10,9 @@ import {connect} from 'react-redux';
 
 class ErrorModal extends Component {
   componentDidMount() {
-    const {res_status} = this.props;
-    if(res_status !== null){
-      this.timer = setTimeout(() => {
-        Actions.pop();
-      },1500)
-    }
+    this.timer = setTimeout(() => {
+      Actions.pop();
+    },6500)
   }
 
   componentWillUnmount() {
@@ -24,6 +21,7 @@ class ErrorModal extends Component {
 
   render() {
     const {icon_type, content} = this.props;
+    console.log(this.props,'modal---------------->>>>>');
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.modalContainer}>

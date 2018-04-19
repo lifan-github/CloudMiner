@@ -34,7 +34,6 @@ export default function ProductReducer(state = productInit, action) {
 
 // 获取商品列表
 function getProduct(data) {
-  console.log(data, 'pro------');
   httpClient.client.then(function (event) {
     event.sales.getProducts({salesMethod: data})
       .then(function (res) {

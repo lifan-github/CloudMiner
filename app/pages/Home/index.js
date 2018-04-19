@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import {
   Text,
   View,
-  NetInfo,
-  ToastAndroid,
   StyleSheet,
   ScrollView,
   RefreshControl,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import {connect} from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,7 +17,6 @@ import NetWorkDiff from './NetWorkDiff';
 import {getExchangeRate, getNotice, getMiningSpeed, getNetWorker} from '../../redux/actions/HomeActions';
 import {formatDateDay} from '../../utils/Config';
 
-
 class Home extends Component {
   componentDidMount() {
     this.props.dispatch(getExchangeRate({code: "CNY"}));
@@ -28,7 +25,7 @@ class Home extends Component {
     this.props.dispatch(getMiningSpeed({categories: ["hashes", "revenues", "workers"]}));
   }
 
-  onPullRefresh(){
+  onPullRefresh() {
     this.props.dispatch(getExchangeRate({code: "CNY"}));
     this.props.dispatch(getNetWorker());
     this.props.dispatch(getNotice({status: ["published"]}));
@@ -36,8 +33,15 @@ class Home extends Component {
   }
 
   render() {
-    const {rateCny, miningSpeed, netWorker, notices} = this.props.homeReducer;
-    // console.log(this.props.homeReducer, 'this.props.homeReducer');
+    //页面需要的数据
+    const {
+      rateCny,
+      miningSpeed,
+      netWorker,
+      notices,
+      isRefreshing
+    } = this.props.homeReducer;
+    //公告显示状态
     let noticeShow;
     if (notices.length > 0) {
       noticeShow = formatDateDay(notices[0].publishedAt) + " - " + (notices[0].title).substring(0, 10) + "..."
@@ -63,12 +67,11 @@ class Home extends Component {
             <Wave/>
           </View>
         </LinearGradient>
-
         <ScrollView
           style={styles.scrollViewContent}
           refreshControl={
             <RefreshControl
-              refreshing={false}
+              refreshing={isRefreshing}
               onRefresh={() => this.onPullRefresh()}
               colors={['#fff']}
               progressBackgroundColor={"#B9B9B9"}

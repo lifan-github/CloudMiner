@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {
   View,
-  StyleSheet,
+  StyleSheet
 } from 'react-native';
 import Animation from 'lottie-react-native';
 
 export default class Starting extends Component {
-  /*componentDidMount() {
+  componentDidMount() {
     const that = this;
     that.animation.play();
     storage.load({
@@ -15,7 +15,7 @@ export default class Starting extends Component {
       if(ret.accessToken){
         that.timerOut = setTimeout(() => {
           Actions.tabbar();
-        },1500);
+        },1000);
       }
     }).catch(err1 => {
       storage.load({
@@ -26,37 +26,33 @@ export default class Starting extends Component {
         if(ret.guideIn){
           that.timerOut = setTimeout(() => {
             Actions.login();
-          },1500);
+          },1000);
         }
       }).catch(err => {
         //如果没有找到数据且没有sync方法，
         //或者有其他异常，则在catch中返回
         that.timerOut = setTimeout(() => {
           Actions.guide();
-        },2000);
+        },1000);
         console.log(err,'err--->>>');
       });
     });
-  }*/
-
-  componentDidMount(){
-    this.timerOut = setTimeout(() => {
-      Actions.tabbar();
-    },1500);
   }
 
   componentWillUnmount(){
-    this.timerOut && clearTimeout(this.timerOut)
+    this.animation.reset();
+    this.timerOut && clearTimeout(this.timerOut);
+
   }
 
   render() {
     return (
       <View style={styles.container}>
-        {/*<Animation
+        <Animation
           ref={animation => {this.animation = animation}}
           style={{width: 300, height: 300}}
           source={require('../../images/starting')}
-        />*/}
+        />
       </View>
     )
   }

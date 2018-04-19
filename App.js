@@ -24,7 +24,21 @@ import {
   Lightbox,
 } from 'react-native-router-flux';
 
-let WeChat = require('react-native-wechat'); // 用inport 导入直接报错
+//非开发模式关闭console
+if (!__DEV__) {
+  global.console = {
+    info: () => {
+    },
+    log: () => {
+    },
+    warn: () => {
+    },
+    error: () => {
+    }
+  };
+}
+
+// let WeChat = require('react-native-wechat'); // 用inport 导入直接报错
 
 // 引入react-redux
 import {Provider} from 'react-redux';
@@ -61,7 +75,6 @@ import ErrorModal from './app/components/ErrorModal';
 
 import {slectedNavBar} from './app/redux/actions/ProductActions';
 
-
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
   return (state, action) => {
@@ -93,10 +106,11 @@ const onBackPress = () => {
 
 export default class App extends Component {
   componentWillMount() {
+
   }
 
   componentDidMount() {
-    WeChat.registerApp('wxb04a1095ab63190c');
+    // WeChat.registerApp('wxb04a1095ab63190c');
   }
 
   render() {

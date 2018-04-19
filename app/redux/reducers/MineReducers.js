@@ -12,7 +12,7 @@ export default function MineReducer(state = mineInit, action) {
   switch (action.type) {
     case types.GET_MY_INFOMATION:
       getMyInfomation();
-      return Object.assign({},state,{mineRefreshing: true});
+      return state;
     case types.INFO_LOADED:
       return Object.assign({},state,{userInfo: action.data, mineRefreshing: false});
     case types.ERR_REQUEST:

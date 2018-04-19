@@ -2,21 +2,21 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet, InteractionManager
 } from 'react-native';
+import {connect} from "react-redux";
+import {getExchangeRate} from "../../../redux/actions/HomeActions";
 
-export default class extends Component {
+class Notice extends Component {
   constructor(props) {
     super(props);
     this.state = {}
   }
 
-  componentWillMount() {
-
-  }
-
   componentDidMount() {
-
+    InteractionManager.runAfterInteractions(() => {
+      this.props.dispatch(getExchangeRate({code: "CNY"}));
+    });
   }
 
   componentWillUnmount() {
@@ -38,4 +38,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   }
-})
+});
+
+function select(state) {
+  return {
+    homeReducer: state.HomeReducer
+  }
+}
+
+export default connect(select)(Notice);

@@ -2,13 +2,14 @@ import * as types from '../constant/ActionTypes';
 import httpClient from '../../utils/HttpClient';
 import store from '../store';
 import {exchangeRateLoaded, noticeLoaded, miningSpeedLoaded, netWorkerLoaded} from '../actions/HomeActions';
+import {resetRefreshing} from '../actions/CommomActions';
 
 let homeInit = {
   rateCny: {}, // 汇率
   notices: [], // 公告
   miningSpeed: {}, // 收益
   netWorker: {}, // 全网难度
-  rateRefreshing: false, // 汇率页面刷新状态
+  isRefreshing: true, // 首页下拉刷新状态
 };
 
 export default function HomeReducer(state = homeInit, action) {
@@ -17,7 +18,7 @@ export default function HomeReducer(state = homeInit, action) {
       getExchangeRate(action.data);
       return state;
     case types.EXCHNAGE_RATE_LOADED:
-      return Object.assign({}, state, {rateCny: action.data});
+      return Object.assign({}, state, {rateCny: action.data, isRefreshing: false});
     case types.GET_NOTICE:
       getNotice(action.data);
       return state;
@@ -33,6 +34,8 @@ export default function HomeReducer(state = homeInit, action) {
       return state;
     case types.NET_WORDER_LOADED:
       return Object.assign({}, state, {netWorker: action.data});
+    case types.RESET_REFRESHING:
+      return Object.assign({}, state, {isRefreshing: action.status});
     default:
       return state;
   }
@@ -41,7 +44,6 @@ export default function HomeReducer(state = homeInit, action) {
 // 获取汇率
 function getExchangeRate(para) {
   httpClient.client.then(function (event) {
-    console.log(event,'eventeventeventeventeventevent')
     httpClient.setHeader(event);
     event.exchange.getBtcRate(para)
       .then(function (res) {
@@ -52,9 +54,17 @@ function getExchangeRate(para) {
           }
         })
       }).catch((err) => {
+       //accessToken 不存在或者过期会进入 如果报401或403直接跳出APP至登录页
+      httpClient.catchRequest(err);
+      //请求失败的话，isRefreshing值改为false
+      store.dispatch(resetRefreshing(false));
       console.log(err, '汇率111');
     })
   }).catch((err) => {
+    //接口不存在会进入
+    httpClient.catchRequest(err);
+    //请求失败的话，isRefreshing值改为false
+    store.dispatch(resetRefreshing(false));
     console.log(err, '汇率222');
   })
 }
@@ -72,11 +82,9 @@ function getNotice(para) {
         })
       }).catch((err) => {
       console.log(err, '公告111');
-      Actions.errorModal();
     })
   }).catch((err) => {
     console.log(err, '公告222');
-    Actions.errorModal();
   })
 }
 
@@ -93,11 +101,9 @@ function getMiningSpeed(para) {
         })
       }).catch((err) => {
       console.log(err, '获取收益111');
-      Actions.errorModal();
     })
   }).catch((err) => {
     console.log(err, '获取收益222');
-    Actions.errorModal();
   })
 }
 
@@ -114,10 +120,8 @@ function getNetWorker() {
         })
       }).catch((err) => {
       console.log(err, '获取全网难度111');
-      Actions.errorModal();
     })
   }).catch((err) => {
     console.log(err, '获取全网难度222');
-    Actions.errorModal();
   })
 }

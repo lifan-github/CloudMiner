@@ -3,6 +3,7 @@
  * @type {string}
  */
 export const REQUEST_ERR = 'REQUEST_ERR'; //错误反馈
+export const RESET_REFRESHING = 'RESET_REFRESHING'; //页面初始化的isRefreshing状态
 /**
  * 登录页
  * @type {string}
