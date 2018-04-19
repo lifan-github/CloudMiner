@@ -4,6 +4,9 @@ import {
 
 const commonStyle = {
   //======>APP中布局出现的常见样式,
+  flex1: {
+    flex: 1
+  },
   row: {
     flexDirection: 'row'
   },

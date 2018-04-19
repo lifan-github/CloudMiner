@@ -12,7 +12,7 @@ class ErrorModal extends Component {
   componentDidMount() {
     this.timer = setTimeout(() => {
       Actions.pop();
-    },6500)
+    },3000)
   }
 
   componentWillUnmount() {

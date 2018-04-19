@@ -65,6 +65,7 @@ import EarningPage from './app/pages/Mine/Earning';
 import CollectRecord from './app/pages/Mine/CollectRecord';
 import BuyingPatterns from './app/pages/Mine/BuyingPatterns';
 import NoticePage from './app/pages/Mine/Notice';
+import NoticeDetail from './app/pages/Mine/Notice/Details';
 import ExchRate from './app/pages/Mine/ExchRate';
 import Setting from './app/pages/Mine/Setting';
 import BtcAddress from "./app/pages/Mine/Setting/BtcAddress";
@@ -182,6 +183,15 @@ export default class App extends Component {
                       title='公告'
                       component={NoticePage}
                       key="theNoticeHome"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
+                    <Scene
+                      title='公告详情'
+                      component={NoticeDetail}
+                      key="noticeDetailHome"
                       hideTabBar
                       titleStyle={styles.titleStyles}
                       onRight={() => alert('Right button')}
