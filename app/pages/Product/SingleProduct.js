@@ -4,29 +4,71 @@ import {
   Text,
   StyleSheet,
   ViewPagerAndroid,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import {connect} from "react-redux";
 import ProductDetails from './ProductDetails';
 import ProductTextDetails from './ProductTextDetails';
-import ColorStore from "../../color";
-import OrderModal from './OrderModal';
 import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
-import {getMyInfomation} from "../../redux/actions/MineActions";
+import store from "../../redux/store";
+import ColorStore from "../../color";
+
+/**
+ * renderTitle 渲染不同状态的renderTitle
+ * @returns {*}
+ */
+const renderTitle = () => {
+  return(
+    <View style={styles.productNavBar}>
+      <TouchableOpacity
+        style={[styles.leftNav, styles.slecteBorder]}
+        onPress={() => store.dispatch(slectedNavBar(0))}
+      >
+        <Text style={[styles.navBarText]}>商品</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.leftNav]}
+        onPress={() => store.dispatch(slectedNavBar(1))}
+      >
+        <Text style={[styles.navBarText]}>详情</Text>
+      </TouchableOpacity>
+    </View>
+  )
+};
+
+const renderTitle1 = () => {
+  return(
+    <View style={styles.productNavBar}>
+      <TouchableOpacity
+        style={[styles.leftNav]}
+        onPress={() => store.dispatch(slectedNavBar(0))}
+      >
+        <Text style={[styles.navBarText]}>商品</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.leftNav, styles.slecteBorder]}
+        onPress={() => store.dispatch(slectedNavBar(1))}
+      >
+        <Text style={[styles.navBarText]}>详情</Text>
+      </TouchableOpacity>
+    </View>
+  )
+};
 
 class SingleProduct extends Component {
   componentDidMount() {
     const productId = this.props.productId;
     this.props.dispatch(getProductById({Id: productId}));
-    this.props.dispatch(getMyInfomation()); // 购买方式获取
   }
 
   componentWillReceiveProps(nextProps) {
     const navBarSlected = nextProps.productReducer.navBarSlected;
     if (navBarSlected === 0) {
       this.viewPager.setPage(0);
+      Actions.refresh({renderTitle: renderTitle});
     } else {
       this.viewPager.setPage(1);
+      Actions.refresh({renderTitle: renderTitle1});
     }
   }
 
@@ -35,55 +77,25 @@ class SingleProduct extends Component {
     this.props.dispatch(slectedNavBar(0))
   }
 
+  bindOnPageSelected(e) {
+    let index = e.nativeEvent.position;
+    if(index === 0){
+      store.dispatch(slectedNavBar(0));
+    }else{
+      store.dispatch(slectedNavBar(1));
+    }
+  }
+
   //下单按钮
-  orderButton(status) {
-    console.log(status, 'status---->>>>>')
-  }
+  orderButton() {
 
-  //增加订单
-  addAmount() {
-    /*const {modalData} = this.state;
-    if(modalData.qtyInStock > 0){
-      modalData.orderNum++;
-      modalData.qtyInStock--;
-      modalData.hasBuySpeed = modalData.orderNum * modalData.hashRate;
-      modalData.totalPrice = modalData.orderNum * modalData.price;
-      this.setState({modalData});
-    }else{
-      ToastAndroid.showWithGravity('库存不够啦', ToastAndroid.SHORT, ToastAndroid.CENTER);
-    }*/
-  }
-
-  //减少订单
-  reduceAmount() {
-    /*const {modalData} = this.state;
-    if(modalData.orderNum > modalData.minQtyOfSale){
-      modalData.orderNum--;
-      modalData.qtyInStock++;
-      modalData.hasBuySpeed = modalData.orderNum * modalData.hashRate;
-      modalData.totalPrice = modalData.orderNum * modalData.price;
-      this.setState({modalData});
-    }else{
-      ToastAndroid.showWithGravity('不能小于最低起售量', ToastAndroid.SHORT, ToastAndroid.CENTER);
-    }*/
-  }
-
-  //点击背景
-  bindTabOpacity() {
-    /*this.setState({
-      isModal: false
-    })*/
-  }
-
-  //立即购买
-  buyNow() {
-    // this.setState({isModal: false});
-    // Actions.productDetails({modalData});
   }
 
   render() {
-    const {singleProductData} = this.props.productReducer;
+    const {singleProductData, navBarSlected} = this.props.productReducer;
     const {netWorker} = this.props.homeReducer;
+    console.log(navBarSlected,'navBarSlected------->>>>>>>');
+
     let orderButtonBg = singleProductData.status === "outOfStock" ? "#FFF0E9" : ColorStore.themeColor;
     let orderButtonTextColor = singleProductData.status === "outOfStock" ? "#EAA794" : "#fff";
     let orderButtonText = singleProductData.status === "outOfStock" ? "已售罄" : "去下单";
@@ -94,17 +106,22 @@ class SingleProduct extends Component {
           style={{flex: 1}}
           initialPage={0}
           peekEnabled={true}
-          ref={viewPager => {
-            this.viewPager = viewPager
-          }}
+          ref={viewPager => {this.viewPager = viewPager}}
+          onPageSelected={(e) => this.bindOnPageSelected(e)}
         >
           <View style={styles.productsContainer}>
-            <ProductDetails data={singleProductData} netWorker={netWorker}/>
+            <ProductDetails
+              data={singleProductData}
+              netWorker={netWorker}
+            />
           </View>
           <View style={styles.detailsContainer}>
-            <ProductTextDetails data={singleProductData}/>
+            <ProductTextDetails
+              data={singleProductData}
+            />
           </View>
         </ViewPagerAndroid>
+
         <View style={[styles.bottomFooter, commonStyle.viewBorderTop, commonStyle.between]}>
           <TouchableOpacity
             style={[commonStyle.center, styles.footBox]}
@@ -119,14 +136,6 @@ class SingleProduct extends Component {
             <Text style={[styles.footText, {color: orderButtonTextColor}]}>{orderButtonText}</Text>
           </TouchableOpacity>
         </View>
-        <OrderModal
-          isModal={true}
-          data={singleProductData}
-          bingAdd={() => this.addAmount()}
-          bindReduce={() => this.reduceAmount()}
-          bindTabOpacity={() => this.bindTabOpacity()}
-          bindBuyNow={() => this.buyNow()}
-        />
       </View>
     )
   }
@@ -158,6 +167,25 @@ const styles = StyleSheet.create({
   },
   color333: {
     color: "#333"
+  },
+  //定制的导航
+  productNavBar: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingLeft: SCREEN_WIDTH / 5,
+    paddingRight: SCREEN_WIDTH / 5
+  },
+  leftNav: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  slecteBorder: {
+    borderBottomWidth: 2,
+    borderColor: ColorStore.themeColor
+  },
+  navBarText: {
+    fontSize: 18
   }
 });
 

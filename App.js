@@ -44,6 +44,7 @@ if (!__DEV__) {
 import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
+console.log(store.getState(), '77777777777777--->>>>>>');
 
 import './app/utils/Global'; // 全局变量
 import TabIcon from './app/components/TabIcon';
@@ -75,6 +76,12 @@ import Clause from './app/pages/Mine/AboutUs/Clause';
 import ErrorModal from './app/components/ErrorModal';
 
 import {slectedNavBar} from './app/redux/actions/ProductActions';
+import ColorStore from "./app/color";
+
+//商品页的单个商品的导航栏事件初始值
+let slected = store.getState().ProductReducer.navBarSlected;
+
+
 
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
@@ -221,7 +228,7 @@ export default class App extends Component {
                             <Text style={[styles.navBarText]}>商品</Text>
                           </TouchableOpacity>
                           <TouchableOpacity
-                            style={styles.leftNav}
+                            style={[styles.leftNav]}
                             onPress={() => store.dispatch(slectedNavBar(1))}
                           >
                             <Text style={[styles.navBarText]}>详情</Text>
@@ -400,7 +407,7 @@ const styles = StyleSheet.create({
   },
   slecteBorder: {
     borderBottomWidth: 2,
-    borderColor: 'red'
+    borderColor: ColorStore.themeColor
   },
   navBarText: {
     fontSize: 18

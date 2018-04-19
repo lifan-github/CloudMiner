@@ -18,7 +18,7 @@ export default class ProductFlatListComponent extends Component {
     if (item.salesMethod && item.salesMethod === "byEquipment") {
       day_earnings = dayGains(item.equipment.hashRate, currentDiff, currBlockSubsidy);
       day_earnings = (day_earnings * (1 - item.serviceFeePercent / 1000)).toFixed(8);
-    }else{
+    } else {
       day_earnings = dayGains(item.salesUnit, currentDiff, currBlockSubsidy);
       day_earnings = (day_earnings * (1 - item.serviceFeePercent / 1000)).toFixed(8);
     }
@@ -39,7 +39,10 @@ export default class ProductFlatListComponent extends Component {
             <View style={styles.nameStatus}>
               <Text numberOfLines={1} style={styles.proName}>{item.name}</Text>
               <View style={{flex: 1}}>
-                <Text style={[styles.productStateText, {color: item.statusColor, backgroundColor: item.statusBgColor}]}>已售罄</Text>
+                <Text style={[styles.productStateText, {
+                  color: item.statusColor,
+                  backgroundColor: item.statusBgColor
+                }]}>已售罄</Text>
               </View>
             </View>
             <View style={styles.productIncome}>
