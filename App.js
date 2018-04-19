@@ -44,6 +44,7 @@ if (!__DEV__) {
 import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
+
 console.log(store.getState(), '77777777777777--->>>>>>');
 
 import './app/utils/Global'; // 全局变量
@@ -80,7 +81,6 @@ import ColorStore from "./app/color";
 
 //商品页的单个商品的导航栏事件初始值
 let slected = store.getState().ProductReducer.navBarSlected;
-
 
 
 const reducerCreate = params => {
@@ -236,7 +236,7 @@ export default class App extends Component {
                         </View>
                       }
                       onRight={() => alert('Right button')}
-                      rightTitle="分享"
+                      rightTitle={() => <Text style={styles.shareIcon}>{IconStore.sharing}</Text>}
                       hideTabBar
                       component={SingleProduct}
                       key="singleProduct"
@@ -411,5 +411,9 @@ const styles = StyleSheet.create({
   },
   navBarText: {
     fontSize: 18
+  },
+  shareIcon: {
+    fontSize: 26,
+    color: "#666"
   }
 });

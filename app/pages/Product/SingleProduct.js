@@ -11,7 +11,6 @@ import ProductDetails from './ProductDetails';
 import ProductTextDetails from './ProductTextDetails';
 import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
 import store from "../../redux/store";
-import ColorStore from "../../color";
 
 /**
  * renderTitle 渲染不同状态的renderTitle
@@ -58,7 +57,7 @@ const renderTitle1 = () => {
 class SingleProduct extends Component {
   componentDidMount() {
     const productId = this.props.productId;
-    this.props.dispatch(getProductById({Id: productId}));
+    store.dispatch(getProductById({Id: productId}));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,7 +73,7 @@ class SingleProduct extends Component {
 
   componentWillUnmount() {
     // 恢复store中的初始值
-    this.props.dispatch(slectedNavBar(0))
+    store.dispatch(slectedNavBar(0))
   }
 
   bindOnPageSelected(e) {
