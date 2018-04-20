@@ -9,12 +9,71 @@ import Swiper from 'react-native-swiper';
 import TextIconComponent from './TextIconComponent';
 import {pointsToYuan, dayGains, speedChange, powerKWh, ServiceFeePercent} from '../../utils/Config';
 
+const renderPagination = (index, total) => {
+  return (
+    <View style={styles.paginationStyle}>
+      <Text style={{color: 'grey'}}>
+        <Text style={styles.paginationText}>{index + 1}</Text>/{total}
+      </Text>
+    </View>
+  )
+};
+
+class SwiperImage extends Component {
+  render() {
+    const {imgArr} = this.props;
+    console.log(imgArr,'imgArr------------>>>>>');
+    return (
+      <Swiper
+        index={0}
+        loop={false}
+        renderPagination={renderPagination}
+      >
+        {
+          imgArr.length > 0 && imgArr.map((item, index) => {
+            return (
+              <Image
+                key={index}
+                style={styles.imgStyle}
+                source={{uri: item.url}}
+              />
+            )
+          })
+        }
+      </Swiper>
+    )
+  }
+}
+
 export default class ProductDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      swiperShow: false
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        swiperShow: true
+      });
+    }, 0)
+  }
+
   render() {
     const {data, netWorker} = this.props;
-    // console.log(data, 'dadadadaadada----->>>>>', netWorker);
-    let productName, productPrice, minQtyOfSale, dayEarnings, blockDiff, blockSubsidy, goodsSpeed, powerWatts,
-      serviceFee;
+    console.log(data, 'dadadadaadada----->>>>>');
+    let productName,
+      productPrice,
+      minQtyOfSale,
+      dayEarnings,
+      blockDiff,
+      blockSubsidy,
+      goodsSpeed,
+      powerWatts,
+      serviceFee,
+      productImgs = [];
 
     blockDiff = netWorker.difficulty.current;
     blockSubsidy = netWorker.blockSubsidy;
@@ -45,10 +104,17 @@ export default class ProductDetails extends Component {
       powerWatts = null;
     }
 
+    //商品轮播图片集
+    if (data.photos && data.photos.length > 0) {
+      productImgs = data.photos.concat(data.coverPhoto)
+    } else {
+      productImgs = productImgs.push(data.coverPhoto)
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.swiperBox}>
-          <Image style={styles.imgStyle} source={ImageStore.commonPic.defaultGood}/>
+          {this.state.swiperShow && <SwiperImage imgArr={productImgs}/>}
         </View>
         <View style={styles.productsInfo}>
           <View style={[commonStyle.viewBorderBottom, styles.namePrice]}>
@@ -101,6 +167,7 @@ const styles = StyleSheet.create({
   imgStyle: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT / 3,
+    resizeMode: 'contain'
   },
   productsInfo: {
     paddingHorizontal: 20
@@ -128,5 +195,14 @@ const styles = StyleSheet.create({
   proPrice: {
     fontSize: 16,
     color: "#F5A623"
-  }
+  },
+  paginationStyle: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
+  },
+  paginationText: {
+    color: '#666',
+    fontSize: 20
+  },
 });

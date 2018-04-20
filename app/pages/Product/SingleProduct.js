@@ -129,7 +129,7 @@ class SingleProduct extends Component {
   addAmount() {
     const {singleProductData} = this.props.productReducer;
 
-    if (singleProductData.qtyInStock > 0) {
+    if (singleProductData.inventory > 0) {
       singleProductData.inventory--;
       singleProductData.orderNum++;
       singleProductData.hasBuySpeed = singleProductData.salesMethod === "byEquipment" ?
