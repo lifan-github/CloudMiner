@@ -31,16 +31,20 @@ class BuyingPatterns extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      WebViewHeight: 300
+      WebViewHeight: 200
     }
   }
 
-  itemSeparatorComponent() {
+  componentDidMount() {
+    this.props.dispatch(getMyInfomation());
+  }
+
+  renderSeparator() {
     return <View style={commonStyle.viewBorderBottom}/>;
   }
 
-  listHeaderComponent(data, text) {
-    if (data.length > 0) {
+  renderHeader(data, text) {
+    if (data && data.length > 0) {
       return (
         <View style={[commonStyle.paddingLR20, commonStyle.paddingTb10]}>
           <Text style={styles.headerText}>{text}</Text>
@@ -51,7 +55,7 @@ class BuyingPatterns extends Component {
     }
   }
 
-  _renderItem(item) {
+  renderItem(item) {
     let accountName;
     switch (item.name) {
       case "mobile":
@@ -72,8 +76,8 @@ class BuyingPatterns extends Component {
         <TouchableOpacity
           activeOpacity={0.8}
           delayLongPress={1500}
-          onPress={() => this._callPhoneNum(item.value || item.account)}
-          onLongPress={() => this._setClipboard(item.value || item.account)}
+          onPress={() => this.callPhoneNum(item.value || item.account)}
+          onLongPress={() => this.setClipboard(item.value || item.account)}
         >
           <Text style={styles.itemsText}>{item.value || item.account}</Text>
         </TouchableOpacity>
@@ -81,31 +85,33 @@ class BuyingPatterns extends Component {
     )
   }
 
-  _setClipboard(value) { // 长按剪切
+  // 长按剪切
+  setClipboard(value) {
     Clipboard.setString(value);
     ToastAndroid.showWithGravity("已复制 " + value, ToastAndroid.SHORT, ToastAndroid.CENTER);
   }
 
-  _callPhoneNum(value) { //拨打电话
+  //拨打电话
+  callPhoneNum(value) {
     if (value.length === 11 && CheckedPhone(value)) {
       Linking.openURL('tel:' + value)
     }
   }
 
-  _onRefresh() {
+  handRefresh() {
     this.props.dispatch(getMyInfomation());
   }
 
   render() {
-    const {userInfo} = this.props.mineReducer;
-    let paybyData = userInfo.platform.paymethods;
-    let contactData = userInfo.platform.contacts;
+    const {userInfo, mineRefreshing} = this.props.mineReducer;
+    let paybyData = userInfo.platform && userInfo.platform.paymethods;
+    let contactData = userInfo.platform && userInfo.platform.contacts;
     return (
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={false}
-            onRefresh={() => this._onRefresh()}
+            refreshing={mineRefreshing}
+            onRefresh={() => this.handRefresh()}
             colors={['#fff']}
             progressBackgroundColor={"#b9b9b9"}
           />
@@ -114,16 +120,16 @@ class BuyingPatterns extends Component {
         <FlatList
           data={paybyData}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => this._renderItem(item)}
-          ItemSeparatorComponent={() => this.itemSeparatorComponent()}
-          ListHeaderComponent={() => this.listHeaderComponent(paybyData, "付款方式")}
+          renderItem={({item}) => this.renderItem(item)}
+          ItemSeparatorComponent={() => this.renderSeparator()}
+          ListHeaderComponent={() => this.renderHeader(paybyData, "付款方式")}
         />
         <FlatList
           data={contactData}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => this._renderItem(item)}
-          ItemSeparatorComponent={() => this.itemSeparatorComponent()}
-          ListHeaderComponent={() => this.listHeaderComponent(contactData, "联系方式")}
+          renderItem={({item}) => this.renderItem(item)}
+          ItemSeparatorComponent={() => this.renderSeparator()}
+          ListHeaderComponent={() => this.renderHeader(contactData, "联系方式")}
         />
         <View style={[commonStyle.paddingLR20, commonStyle.paddingTb10]}>
           <Text style={styles.headerText}>注意事项</Text>

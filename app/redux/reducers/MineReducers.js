@@ -5,7 +5,7 @@ import {infoLoaded, errRequest} from '../actions/MineActions';
 
 let mineInit = {
   userInfo: {},
-  mineRefreshing: false
+  mineRefreshing: true
 };
 
 export default function MineReducer(state = mineInit, action) {
@@ -31,7 +31,6 @@ export default function MineReducer(state = mineInit, action) {
 // 获取用户信息
 function getMyInfomation() {
   httpClient.client.then(function (event) {
-    console.log(event,'event----->>>>>>>>>>>>>>>>>>>>123456789');
     event.me.getProfile()
       .then(function (res) {
         httpClient.resBack(res, function () {
@@ -42,13 +41,9 @@ function getMyInfomation() {
         })
       }).catch((err) => {
       console.log(err, '获取用户信息111');
-      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
-      store.dispatch(errRequest()); //====>>>> ****下拉请求出错的话，也要复位mineRefreshing的值
     })
   }).catch((err) => {
     console.log(err, '获取用户信息222');
-    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
-    store.dispatch(errRequest())
   })
 }
 
