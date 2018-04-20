@@ -12,7 +12,7 @@ import {pointsToYuan, dayGains, speedChange, powerKWh, ServiceFeePercent} from '
 export default class ProductDetails extends Component {
   render() {
     const {data, netWorker} = this.props;
-    console.log(data, 'dadadadaadada----->>>>>', netWorker);
+    // console.log(data, 'dadadadaadada----->>>>>', netWorker);
     let productName, productPrice, minQtyOfSale, dayEarnings, blockDiff, blockSubsidy, goodsSpeed, powerWatts,
       serviceFee;
 

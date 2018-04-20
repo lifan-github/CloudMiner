@@ -46,3 +46,11 @@ export function slectedNavBar(data) {
     data
   }
 }
+
+//单个商品下单详情
+export function singleProduct(data) {
+  return {
+    type: types.SINGLE_PRODUCT,
+    data
+  }
+}

@@ -44,3 +44,4 @@ export const PRODUCT_S_LOADED = 'PRODUCT_S_LOADED'; //渲染商品列表（按�
 export const GET_PRODUCT_BY_ID = 'GET_PRODUCT_BY_ID'; //获取单个商品
 export const PRODUCT_BY_ID_DATA = 'PRODUCT_BY_ID_DATA'; //渲染单个商品
 export const SLECTED_NAVBAR = 'SLECTED_NAVBAR'; //导航栏切换
+export const SINGLE_PRODUCT = 'SINGLE_PRODUCT'; //单个商品购物车

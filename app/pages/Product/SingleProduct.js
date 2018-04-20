@@ -2,14 +2,18 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
+  BackHandler,
   StyleSheet,
   ViewPagerAndroid,
   TouchableOpacity,
+  ToastAndroid
 } from 'react-native';
 import {connect} from "react-redux";
+import ModalBox from 'react-native-modalbox';
 import ProductDetails from './ProductDetails';
 import ProductTextDetails from './ProductTextDetails';
-import {getProductById, slectedNavBar} from '../../redux/actions/ProductActions';
+import OrderModal from './OrderModal';
+import {getProductById, slectedNavBar, singleProduct} from '../../redux/actions/ProductActions';
 import store from "../../redux/store";
 
 /**
@@ -17,7 +21,7 @@ import store from "../../redux/store";
  * @returns {*}
  */
 const renderTitle = () => {
-  return(
+  return (
     <View style={styles.productNavBar}>
       <TouchableOpacity
         style={[styles.leftNav, styles.slecteBorder]}
@@ -36,7 +40,7 @@ const renderTitle = () => {
 };
 
 const renderTitle1 = () => {
-  return(
+  return (
     <View style={styles.productNavBar}>
       <TouchableOpacity
         style={[styles.leftNav]}
@@ -55,9 +59,17 @@ const renderTitle1 = () => {
 };
 
 class SingleProduct extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      orderModalBox: false
+    }
+  }
+
   componentDidMount() {
     const productId = this.props.productId;
     store.dispatch(getProductById({Id: productId}));
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,39 +85,103 @@ class SingleProduct extends Component {
 
   componentWillUnmount() {
     // 恢复store中的初始值
-    store.dispatch(slectedNavBar(0))
+    store.dispatch(slectedNavBar(0));
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
   }
+
+  onBackAndroid = () => {
+    const {orderModalBox} = this.state;
+    //在当前页面下监听
+    if (orderModalBox) {
+      this.setState({
+        orderModalBox: false
+      });
+      return true;
+    }
+  };
 
   bindOnPageSelected(e) {
     let index = e.nativeEvent.position;
-    if(index === 0){
+    if (index === 0) {
       store.dispatch(slectedNavBar(0));
-    }else{
+    } else {
       store.dispatch(slectedNavBar(1));
     }
   }
 
   //下单按钮
-  orderButton() {
+  orderButton(status) {
+    if (status !== "outOfStock") {
+      this.setState({
+        orderModalBox: true
+      });
+    }
+  }
+
+  //点击透明背景关闭状态
+  onClosed() {
+    this.setState({
+      orderModalBox: false
+    });
+  }
+
+  //增加订单
+  addAmount() {
+    const {singleProductData} = this.props.productReducer;
+
+    if (singleProductData.qtyInStock > 0) {
+      singleProductData.inventory--;
+      singleProductData.orderNum++;
+      singleProductData.hasBuySpeed = singleProductData.salesMethod === "byEquipment" ?
+                    singleProductData.orderNum * singleProductData.equipment.hashRate :
+                    singleProductData.orderNum * singleProductData.salesUnit;
+      store.dispatch(singleProduct(singleProductData));
+      console.log(singleProductData, '单个商品数据+++++++++')
+    } else {
+      ToastAndroid.showWithGravity('库存不够啦', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    }
+  }
+
+  //减少订单
+  reduceAmount() {
+    const {singleProductData} = this.props.productReducer;
+
+    if (singleProductData.orderNum > singleProductData.minQtyOfSale) {
+      singleProductData.orderNum--;
+      singleProductData.inventory++;
+      singleProductData.hasBuySpeed = singleProductData.salesMethod === "byEquipment" ?
+        singleProductData.orderNum * singleProductData.equipment.hashRate :
+        singleProductData.orderNum * singleProductData.salesUnit;
+      store.dispatch(singleProduct(singleProductData));
+    } else {
+      ToastAndroid.showWithGravity('不能小于最低起售量', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    }
+  }
+
+  //立即购买按钮
+  buyNow() {
+    this.setState({
+      orderModalBox: false
+    });
 
   }
 
   render() {
-    const {singleProductData, navBarSlected} = this.props.productReducer;
+    const {singleProductData} = this.props.productReducer;
     const {netWorker} = this.props.homeReducer;
-    console.log(navBarSlected,'navBarSlected------->>>>>>>');
-
     let orderButtonBg = singleProductData.status === "outOfStock" ? "#FFF0E9" : ColorStore.themeColor;
     let orderButtonTextColor = singleProductData.status === "outOfStock" ? "#EAA794" : "#fff";
     let orderButtonText = singleProductData.status === "outOfStock" ? "已售罄" : "去下单";
-    console.log(singleProductData, 'singleProductData-----------');
+    console.log('fffff----->>>>>>>>');
     return (
       <View style={commonStyle.pageColor}>
         <ViewPagerAndroid
           style={{flex: 1}}
           initialPage={0}
           peekEnabled={true}
-          ref={viewPager => {this.viewPager = viewPager}}
+          ref={viewPager => {
+            this.viewPager = viewPager
+          }}
           onPageSelected={(e) => this.bindOnPageSelected(e)}
         >
           <View style={styles.productsContainer}>
@@ -135,6 +211,22 @@ class SingleProduct extends Component {
             <Text style={[styles.footText, {color: orderButtonTextColor}]}>{orderButtonText}</Text>
           </TouchableOpacity>
         </View>
+
+        <ModalBox
+          style={styles.orderModal}
+          position={"bottom"}
+          ref={"orderModal"}
+          isOpen={this.state.orderModalBox}
+          onClosed={() => this.onClosed()}
+          coverScreen={true}
+        >
+          <OrderModal
+            data={singleProductData}
+            bingAdd={() => this.addAmount()}
+            bindReduce={() => this.reduceAmount()}
+            bindBuyNow={() => this.buyNow()}
+          />
+        </ModalBox>
       </View>
     )
   }
@@ -185,7 +277,12 @@ const styles = StyleSheet.create({
   },
   navBarText: {
     fontSize: 18
-  }
+  },
+  orderModal: {
+    height: 250,
+    flexDirection: "row",
+    alignItems: 'center',
+  },
 });
 
 function select(state) {

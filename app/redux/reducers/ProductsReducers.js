@@ -27,6 +27,8 @@ export default function ProductReducer(state = productInit, action) {
       return Object.assign({}, state, {singleProductData: action.data});
     case types.SLECTED_NAVBAR:
       return Object.assign({}, state, {navBarSlected: action.data});
+    case types.SINGLE_PRODUCT:
+      return Object.assign({}, state, {singleProductData: action.data});
     default:
       return state;
   }
@@ -91,7 +93,18 @@ function getProductById(data) {
         httpClient.resBack(res, function () {
           if (res.status === 200) {
             console.log(res, "单个商品!");
-            store.dispatch(productByIdData(res.obj));
+            let singleData = res.obj;
+            singleData.orderNum = singleData.minQtyOfSale; // 初始化下单数
+            singleData.inventory = singleData.qtyInStock - singleData.minQtyOfSale; // 初始化库存
+
+            // 初始化已经购买的算力
+            if(singleData.salesMethod === "byEquipment"){
+              singleData.hasBuySpeed = singleData.minQtyOfSale * singleData.equipment.hashRate;
+            }else {
+              singleData.hasBuySpeed = singleData.minQtyOfSale * singleData.salesUnit;
+            }
+            store.dispatch(productByIdData(singleData));
+
           }
         })
       }).catch((err) => {
