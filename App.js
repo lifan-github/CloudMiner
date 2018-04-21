@@ -56,6 +56,7 @@ import Home from './app/pages/Home';
 //======商品页=======//
 import Product from './app/pages/Product';
 import SingleProduct from "./app/pages/Product/SingleProduct";
+import OrderProductDetails from './app/pages/Product/OrderProductDetails';
 //======我的页=======//
 import Mine from './app/pages/Mine';
 import UserInfoPage from './app/pages/Mine/UserInfo';
@@ -240,6 +241,15 @@ export default class App extends Component {
                       title='购买方式'
                       component={BuyingPatterns}
                       key="proToPayment"
+                      hideTabBar
+                      titleStyle={styles.titleStyles}
+                      onRight={() => alert('Right button')}
+                      rightTitle=""
+                    />
+                    <Scene
+                      title='确认订单'
+                      component={OrderProductDetails}
+                      key="productDetails"
                       hideTabBar
                       titleStyle={styles.titleStyles}
                       onRight={() => alert('Right button')}

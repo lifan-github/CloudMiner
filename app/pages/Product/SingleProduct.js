@@ -169,6 +169,7 @@ class SingleProduct extends Component {
     this.setState({
       orderModalBox: false
     });
+    Actions.productDetails();
   }
 
   render() {

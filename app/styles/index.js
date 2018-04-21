@@ -31,6 +31,15 @@ const commonStyle = {
   bgColor: {
     backgroundColor: "#fff"
   },
+  yellowColor: {
+    color: "#F5A623"
+  },
+  greenColor: {
+    color: "#7ED321"
+  },
+  waitingColor: {
+    color: "#FF8E5F"
+  },
   intervalView: { // 间隔
     height: 10
   },
@@ -42,6 +51,10 @@ const commonStyle = {
   },
   paddingLR20: {
     paddingHorizontal: 20
+  },
+  paddingTb5: {
+    paddingTop: 5,
+    paddingBottom: 5
   },
   paddingTb10: {
     paddingTop: 10,
