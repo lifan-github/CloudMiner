@@ -54,3 +54,11 @@ export function singleProduct(data) {
     data
   }
 }
+
+//分享商品
+export function showShareModal(status) {
+  return {
+    type: types.SHOW_SHARE_MODAL,
+    status
+  }
+}

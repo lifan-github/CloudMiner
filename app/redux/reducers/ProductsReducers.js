@@ -9,6 +9,7 @@ let productInit = {
   productDataS: [], //算力
   navBarSlected: 0, // 导航栏切换
   singleProductData: {}, // 单个商品
+  shareModal: false, //分享商品modal状态
 };
 
 export default function ProductReducer(state = productInit, action) {
@@ -29,6 +30,8 @@ export default function ProductReducer(state = productInit, action) {
       return Object.assign({}, state, {navBarSlected: action.data});
     case types.SINGLE_PRODUCT:
       return Object.assign({}, state, {singleProductData: action.data});
+    case types.SHOW_SHARE_MODAL:
+      return Object.assign({}, state, {shareModal: action.status});
     default:
       return state;
   }

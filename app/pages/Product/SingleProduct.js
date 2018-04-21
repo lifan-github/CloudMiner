@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
+  Image,
   BackHandler,
   StyleSheet,
   ViewPagerAndroid,
@@ -13,7 +14,7 @@ import ModalBox from 'react-native-modalbox';
 import ProductDetails from './ProductDetails';
 import ProductTextDetails from './ProductTextDetails';
 import OrderModal from './OrderModal';
-import {getProductById, slectedNavBar, singleProduct} from '../../redux/actions/ProductActions';
+import {getProductById, slectedNavBar, singleProduct, showShareModal} from '../../redux/actions/ProductActions';
 import store from "../../redux/store";
 
 /**
@@ -125,6 +126,11 @@ class SingleProduct extends Component {
     });
   }
 
+  //关闭分享商品modal
+  onClosedShare(){
+    store.dispatch(showShareModal(false))
+  }
+
   //增加订单
   addAmount() {
     const {singleProductData} = this.props.productReducer;
@@ -163,11 +169,10 @@ class SingleProduct extends Component {
     this.setState({
       orderModalBox: false
     });
-
   }
 
   render() {
-    const {singleProductData} = this.props.productReducer;
+    const {singleProductData, shareModal} = this.props.productReducer;
     const {netWorker} = this.props.homeReducer;
     let orderButtonBg = singleProductData.status === "outOfStock" ? "#FFF0E9" : ColorStore.themeColor;
     let orderButtonTextColor = singleProductData.status === "outOfStock" ? "#EAA794" : "#fff";
@@ -227,6 +232,35 @@ class SingleProduct extends Component {
             bindBuyNow={() => this.buyNow()}
           />
         </ModalBox>
+
+        <ModalBox
+          style={styles.shareModal}
+          position={"bottom"}
+          ref={"shareModal"}
+          isOpen={shareModal}
+          onClosed={() => this.onClosedShare()}
+          coverScreen={true}
+        >
+          <View style={styles.shareWay}>
+            <TouchableOpacity
+              style={styles.shareImgBox}
+              onPress={() => alert("分享至微信好友")}
+            >
+              <Image style={styles.shareImg} source={ImageStore.commonPic.wechat}/>
+            </TouchableOpacity>
+            <Text>微信好友</Text>
+          </View>
+          <View style={styles.shareWay}>
+            <TouchableOpacity
+              style={styles.shareImgBox}
+              onPress={() => alert("分享至朋友圈")}
+            >
+              <Image style={styles.shareImg} source={ImageStore.commonPic.moment}/>
+            </TouchableOpacity>
+            <Text>微信好友</Text>
+          </View>
+
+        </ModalBox>
       </View>
     )
   }
@@ -282,6 +316,27 @@ const styles = StyleSheet.create({
     height: 250,
     flexDirection: "row",
     alignItems: 'center',
+  },
+  shareModal: {
+    height: 150,
+    flexDirection: "row",
+    alignItems: 'center',
+  },
+  shareWay: {
+    marginLeft: 20,
+    marginRight: 20,
+    alignItems: "center"
+  },
+  shareImgBox: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 6,
+    marginBottom: 5
+  },
+  shareImg: {
+    width: 40,
+    height: 40
   },
 });
 

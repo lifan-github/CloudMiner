@@ -11,7 +11,9 @@ export default {
     logo: require('./logo-3.png'),
     userPhoto: require('./userPhoto.png'),
     defaultGood: require('./kj.png'),
-    backIcon: require('./back-icon.png')
+    backIcon: require('./back-icon.png'),
+    wechat: require('./wechat.png'),
+    moment: require('./moment.png')
   },
   //无数据状态
   noStatusPic: {

@@ -45,8 +45,6 @@ import {Provider} from 'react-redux';
 // 引入store文件
 import store from './app/redux/store';
 
-console.log(store.getState(), '77777777777777--->>>>>>');
-
 import './app/utils/Global'; // 全局变量
 import TabIcon from './app/components/TabIcon';
 //====启动登录页=====//
@@ -76,11 +74,8 @@ import Clause from './app/pages/Mine/AboutUs/Clause';
 //======顶层错误提示页=======//
 import ErrorModal from './app/components/ErrorModal';
 
-import {slectedNavBar} from './app/redux/actions/ProductActions';
-import ColorStore from "./app/color";
+import {slectedNavBar, showShareModal} from './app/redux/actions/ProductActions';
 
-//商品页的单个商品的导航栏事件初始值
-let slected = store.getState().ProductReducer.navBarSlected;
 
 
 const reducerCreate = params => {
@@ -235,7 +230,7 @@ export default class App extends Component {
                           </TouchableOpacity>
                         </View>
                       }
-                      onRight={() => alert('Right button')}
+                      onRight={() => store.dispatch(showShareModal(true))}
                       rightTitle={() => <Text style={styles.shareIcon}>{IconStore.sharing}</Text>}
                       hideTabBar
                       component={SingleProduct}
