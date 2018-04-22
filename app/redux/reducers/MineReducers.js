@@ -5,7 +5,7 @@ import {infoLoaded, errRequest} from '../actions/MineActions';
 
 let mineInit = {
   userInfo: {},
-  mineRefreshing: true
+  mineRefreshing: false
 };
 
 export default function MineReducer(state = mineInit, action) {
@@ -14,9 +14,9 @@ export default function MineReducer(state = mineInit, action) {
       getMyInfomation();
       return state;
     case types.INFO_LOADED:
-      return Object.assign({},state,{userInfo: action.data, mineRefreshing: false});
+      return Object.assign({}, state, {userInfo: action.data, mineRefreshing: false});
     case types.ERR_REQUEST:
-      return Object.assign({},state,{mineRefreshing: false});
+      return Object.assign({}, state, {mineRefreshing: false});
     case types.UPLODA_HEAD_IMG:
       uploadHeadImg(action.data);
       return state;
@@ -57,16 +57,15 @@ function uploadHeadImg(data) {
           if (res.status === 200) {
             console.log(res, "上传用户头像!");
             getMyInfomation();
-            httpClient.errorModal({res_status: "ok", icon_type: "success", content: "上传成功"});
           }
         })
       }).catch((err) => {
+      httpClient.catchRequest(err);
       console.log(err, '上传用户头像111');
-      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
     })
   }).catch((err) => {
+    httpClient.catchRequest(err);
     console.log(err, '上传用户头像222');
-    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
   })
 }
 
@@ -79,16 +78,15 @@ function setUserName(data) {
           if (res.status === 200) {
             console.log(res, "更改用户昵称!");
             getMyInfomation();
-            httpClient.errorModal({res_status: "ok", icon_type: "success", content: "上传成功"});
           }
         })
       }).catch((err) => {
+      httpClient.catchRequest(err);
       console.log(err, '更改用户昵称111');
-      httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
     })
   }).catch((err) => {
+    httpClient.catchRequest(err);
     console.log(err, '更改用户昵称222');
-    httpClient.errorModal({res_status: "ok", icon_type: "fail", content: "网络不好 稍后重试"});
   })
 }
 

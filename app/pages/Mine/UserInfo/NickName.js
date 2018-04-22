@@ -49,7 +49,7 @@ class NickName extends Component {
       ToastAndroid.showWithGravity('请填写新的昵称', ToastAndroid.SHORT, ToastAndroid.CENTER);
     }else{
       Keyboard.dismiss();
-      Actions.errorModal({res_status: null, icon_type: "loading", content: "昵称上传中"});
+      Actions.errorModal({icon_type: "loading", content: "昵称上传中"});
       this.props.dispatch(setUserName({nickName: newName}))
     }
   }
