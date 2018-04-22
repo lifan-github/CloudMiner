@@ -78,7 +78,6 @@ import ErrorModal from './app/components/ErrorModal';
 import {slectedNavBar, showShareModal} from './app/redux/actions/ProductActions';
 
 
-
 const reducerCreate = params => {
   const defaultReducer = new Reducer(params);
   return (state, action) => {

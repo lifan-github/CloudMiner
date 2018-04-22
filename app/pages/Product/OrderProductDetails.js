@@ -5,8 +5,12 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
+import {connect} from "react-redux";
+import {pointsToYuan, speedChange} from '../../utils/Config';
+import {getMyInfomation} from "../../redux/actions/MineActions";
 
 class ListComponent extends Component {
   render() {
@@ -20,38 +24,48 @@ class ListComponent extends Component {
   }
 }
 
-export default class OrderProductDetails extends Component {
+class OrderProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {}
   }
 
   componentDidMount() {
-
+    this.props.dispatch(getMyInfomation());
   }
 
   componentWillUnmount() {
 
   }
 
-  userLeaveMsg(){
+  userLeaveMsg() {
 
   }
 
-  submitProduct(){
+  submitProduct() {
 
   }
 
   render() {
+    const {singleProductData} = this.props.productReducer;
+    const {userInfo} = this.props.mineReducer;
+    console.log(singleProductData,'单个商品------------', userInfo)
+    let price, hashRate, totalSpeeds, totalPrice, btcRevenueAddress;
+    price = pointsToYuan(singleProductData.price);
+    hashRate = singleProductData.salesMethod === "byEquipment" ?
+             speedChange(singleProductData.equipment.hashRate) :
+             speedChange(singleProductData.salesUnit);
+    totalSpeeds = speedChange(singleProductData.hasBuySpeed);
+    totalPrice = pointsToYuan(singleProductData.orderNum * singleProductData.price);
+    btcRevenueAddress = userInfo && userInfo.btcRevenueAddress ? userInfo.btcRevenueAddress : "填写收币地址才能获取收益";
     return (
-      <View style={styles.container}>
-
+      <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={commonStyle.intervalView}/>
         <View style={styles.coinAddressBox}>
           <View style={styles.leftBorder}/>
           <Text style={[commonStyle.paddingTb10, styles.addrText]}>收币地址</Text>
           <View style={styles.lineStyle}/>
-          <Text style={[styles.editorAddr]}>fghjk7897889312hjkfda67</Text>
+          <Text style={[styles.editorAddr]}>{btcRevenueAddress}</Text>
         </View>
 
         <View style={commonStyle.intervalView}/>
@@ -61,25 +75,25 @@ export default class OrderProductDetails extends Component {
           <View style={styles.proImgName}>
             <Image style={styles.proImg} source={ImageStore.commonPic.defaultGood}/>
             <View>
-              <Text style={styles.proName}>6号商品</Text>
-              <Text style={[styles.proPrice, commonStyle.yellowColor]}>￥5000</Text>
+              <Text style={styles.proName}>{singleProductData.name}</Text>
+              <Text style={[styles.proPrice, commonStyle.yellowColor]}>{IconStore.rmb} {price}</Text>
             </View>
           </View>
           <ListComponent
             leftText={"每份算力"}
-            rightText={"12.5 THs"}
+            rightText={hashRate}
           />
           <ListComponent
             leftText={"购买数量"}
-            rightText={"2"}
+            rightText={singleProductData.orderNum}
           />
           <ListComponent
             leftText={"总算力"}
-            rightText={"12.5 THs"}
+            rightText={totalSpeeds}
           />
           <View style={[commonStyle.between, commonStyle.paddingTb5]}>
             <Text style={styles.totalPriceText}>总价</Text>
-            <Text style={styles.totalPriceValue}>{IconStore.rmb} {"5000"}</Text>
+            <Text style={styles.totalPriceValue}>{IconStore.rmb} {totalPrice}</Text>
           </View>
         </View>
 
@@ -103,7 +117,8 @@ export default class OrderProductDetails extends Component {
         >
           <Text style={styles.submitBtn}>提交订单</Text>
         </TouchableOpacity>
-      </View>
+
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -182,16 +197,24 @@ const styles = StyleSheet.create({
   },
   submitOrder: {
     height: 50,
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
+    marginHorizontal: 20,
     backgroundColor: ColorStore.themeColor,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 50,
+    borderRadius: 2
   },
   submitBtn: {
     fontSize: 16,
     color: "#fff"
   }
 });
+
+function select(state) {
+  return {
+    productReducer: state.ProductReducer,
+    mineReducer: state.MineReducer,
+  }
+}
+
+export default connect(select)(OrderProductDetails);
